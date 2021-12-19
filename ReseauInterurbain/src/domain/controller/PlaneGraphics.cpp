@@ -26,8 +26,8 @@
 #include "wx/dcps.h"
 #endif
 
-namespace RI_DOMAIN {
-
+namespace RI_DOMAIN 
+{
 PlaneGraphics::PlaneGraphics(wxPanel* parent) : m_parent(parent)
 {
 }
@@ -68,4 +68,4 @@ void PlaneGraphics::DrawComponent(wxDC& pdc)
 #endif 
 
 }
-} // namespace RI_DOMAIN 
+} // namespace RI_DOMAIN

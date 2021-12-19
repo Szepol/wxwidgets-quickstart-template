@@ -47,5 +47,4 @@ void DrawPanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 		planeGraphics->DrawComponent(pdc);
 	}
 }
-
 } // namespace RI_GUI

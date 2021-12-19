@@ -8,6 +8,8 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
+#pragma once
+
 #include <wx/frame.h>
 #include <wx/panel.h>
 
@@ -32,5 +34,4 @@ protected:
 
 	wxDECLARE_EVENT_TABLE();
 };
-
 } // namespace RI_GUI

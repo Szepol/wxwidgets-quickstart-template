@@ -7,6 +7,8 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
+#pragma once
+
 #include <wx/graphics.h>
 #include <wx/panel.h>
 
@@ -30,5 +32,4 @@ protected:
 	wxPanel* m_parent;
 	wxGraphicsRenderer* m_renderer;
 };
-
 }

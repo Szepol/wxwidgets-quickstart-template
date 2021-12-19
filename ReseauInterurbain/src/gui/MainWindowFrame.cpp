@@ -18,7 +18,6 @@
 
 namespace RI_GUI 
 {
-
 inline wxString wxBuildInfo() 
 {
     wxString build;
@@ -109,5 +108,4 @@ void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(wxT("Version : ReseauInterurbain-v0.00") + wxBuildInfo(), wxT("Information"));
 }
-
 } // namespace RI_GUI
