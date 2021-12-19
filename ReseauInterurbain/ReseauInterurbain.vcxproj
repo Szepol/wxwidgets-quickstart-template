@@ -21,12 +21,16 @@
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\domain\controller\PlaneGraphics.cpp" />
+    <ClCompile Include="src\domain\reseau\Graphe.cpp" />
+    <ClCompile Include="src\domain\reseau\ReseauInterurbain.cpp" />
     <ClCompile Include="src\gui\DrawPanel.cpp" />
     <ClCompile Include="src\gui\MainWindowFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\domain\controller\PlaneGraphics.h" />
+    <ClInclude Include="src\domain\reseau\Graphe.h" />
+    <ClInclude Include="src\domain\reseau\ReseauInterurbain.h" />
     <ClInclude Include="src\gui\DrawPanel.h" />
     <ClInclude Include="src\gui\MainWindowFrame.h" />
   </ItemGroup>
