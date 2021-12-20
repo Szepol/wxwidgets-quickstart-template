@@ -1,7 +1,7 @@
+
 /*****************************************************************//**
- * \file    App.h
- * \brief   Defines Application class, acts as the entry point
- * for the application
+ * \file    Arc.h
+ * \brief   
  * 
  * \author  Szepol
  * \date    December 2021
@@ -10,16 +10,14 @@
 
 #pragma once
 
-#include <wx/app.h>
-
 namespace reseau_interurbain
 {
-class App : public wxApp
+namespace domain
 {
-public:
-    virtual bool OnInit() wxOVERRIDE;
-    virtual int OnExit() wxOVERRIDE { return 0; };
+class Arc
+{
 
 };
+} // namespace domain
 } // namespace reseau_interurbain
 

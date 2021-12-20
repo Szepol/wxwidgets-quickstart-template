@@ -1,7 +1,7 @@
 /*****************************************************************//**
- * \file    PlaneGraphics.h
- * \brief   Defines plane graphics where the controller
- * communicates with the renderer
+ * \file    ControllerOutput.h
+ * \brief   
+ * 
  * \author  Szepol
  * \date    December 2021
  * \license This project is released under MIT license.
@@ -11,25 +11,32 @@
 
 #include <wx/graphics.h>
 #include <wx/panel.h>
+#include "Model.h"
 
-namespace RI_DOMAIN 
+namespace reseau_interurbain
 {
-
-class PlaneGraphics
+namespace domain
+{
+class ControllerOutput
 {
 public:
-	PlaneGraphics(wxPanel *parent);
-	~PlaneGraphics() {};
+	ControllerOutput(wxPanel* parent, Model* p_model);
+	~ControllerOutput() {};
 
 	bool IsUsingBuffer() { return m_useBuffer; };
 	void EnableAntiAliasing(bool use = true) { m_useAntiAliasing = use; m_parent->Refresh(); }
 	void EnableBuffer(bool use = true) { m_useBuffer = use; m_parent->Refresh(); }
 	void DrawComponent(wxDC& dc);
 protected:
+	void DrawGrid(wxDC& dc);
 
+	Model* m_model;
 	bool m_useBuffer;
 	bool m_useAntiAliasing;
+	bool m_useAffineMatrix;
 	wxPanel* m_parent;
 	wxGraphicsRenderer* m_renderer;
 };
-}
+} // namespace domain
+} // namespace reseau_interurbain
+

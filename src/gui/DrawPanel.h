@@ -13,25 +13,30 @@
 #include <wx/frame.h>
 #include <wx/panel.h>
 
-// Forward declaration ( Class is defined in source file )
-namespace RI_DOMAIN 
+namespace reseau_interurbain
 {
-class PlaneGraphics;
-} // RI_DOMAIN
-
-namespace RI_GUI 
+// Forward declaration
+namespace domain
 {
+class ControllerOutput;
+class Model;
+} // namespace domain
 
-class DrawPanel : wxPanel 
+namespace gui
+{
+class DrawPanel : public wxPanel
 {
 public:
-	DrawPanel(wxFrame* parent);
+	DrawPanel(wxFrame* p_parent, domain::Model* p_model);
 	~DrawPanel();
 
 	void OnPaint(wxPaintEvent& event);
+
 protected:
-	RI_DOMAIN::PlaneGraphics*		planeGraphics;
+	domain::ControllerOutput* m_controller;
 
 	wxDECLARE_EVENT_TABLE();
 };
-} // namespace RI_GUI
+} // namespace gui
+} // namespace reseau_interurbain
+

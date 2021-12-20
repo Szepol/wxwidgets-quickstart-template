@@ -20,19 +20,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\App.cpp" />
-    <ClCompile Include="..\..\src\domain\controller\PlaneGraphics.cpp" />
+    <ClCompile Include="..\..\src\domain\controller\ControllerInput.cpp" />
+    <ClCompile Include="..\..\src\domain\controller\ControllerOutput.cpp" />
+    <ClCompile Include="..\..\src\domain\reseau\Arc.cpp" />
     <ClCompile Include="..\..\src\domain\reseau\Graphe.cpp" />
+    <ClCompile Include="..\..\src\domain\reseau\Noeud.cpp" />
     <ClCompile Include="..\..\src\domain\reseau\ReseauInterurbain.cpp" />
     <ClCompile Include="..\..\src\gui\DrawPanel.cpp" />
     <ClCompile Include="..\..\src\gui\MainWindowFrame.cpp" />
+    <ClCompile Include="..\..\src\domain\controller\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\App.h" />
-    <ClInclude Include="..\..\src\domain\controller\PlaneGraphics.h" />
+    <ClInclude Include="..\..\src\domain\controller\ControllerInput.h" />
+    <ClInclude Include="..\..\src\domain\controller\ControllerOutput.h" />
+    <ClInclude Include="..\..\src\domain\reseau\Arc.h" />
     <ClInclude Include="..\..\src\domain\reseau\Graphe.h" />
+    <ClInclude Include="..\..\src\domain\reseau\Noeud.h" />
     <ClInclude Include="..\..\src\domain\reseau\ReseauInterurbain.h" />
     <ClInclude Include="..\..\src\gui\DrawPanel.h" />
     <ClInclude Include="..\..\src\gui\MainWindowFrame.h" />
+    <ClInclude Include="..\..\src\domain\controller\Model.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -113,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderOutputFile>..\..\bin\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
@@ -131,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderOutputFile>..\..\bin\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
@@ -149,7 +157,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>..\..\bin\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -168,7 +176,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>..\..\bin\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>

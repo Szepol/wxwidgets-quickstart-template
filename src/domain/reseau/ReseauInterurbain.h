@@ -19,7 +19,7 @@
 #include <vector>
 #include <list>
 
-namespace RI_DOMAIN
+namespace reseau_interurbain
 {
 /**
  * \struct Chemin
@@ -104,4 +104,4 @@ private:
 	std::string nomReseau;		// Le nom du reseau (exemple: Orleans Express)
 
 };
-} // namespace RI_DOMAIN
+} // namespace reseau_interurbain

@@ -9,7 +9,8 @@
  *********************************************************************/
 
 #include "DrawPanel.h"
-#include "../domain/controller/PlaneGraphics.h"
+#include "../domain/controller/ControllerOutput.h"
+#include "../domain/controller/Model.h"
 #include "wx/dcbuffer.h"
 
 #include <wx/wxprec.h>
@@ -17,34 +18,37 @@
 #include <wx/wx.h>
 #endif
 
-namespace RI_GUI
+namespace reseau_interurbain
 {
-
+namespace gui
+{
 wxBEGIN_EVENT_TABLE(DrawPanel, wxPanel)
-	EVT_PAINT(DrawPanel::OnPaint)
+EVT_PAINT(DrawPanel::OnPaint)
 wxEND_EVENT_TABLE()
 
-DrawPanel::DrawPanel(wxFrame* parent)
-	: wxPanel(parent), planeGraphics(new RI_DOMAIN::PlaneGraphics(this))
+DrawPanel::DrawPanel(wxFrame* p_parent, domain::Model* p_model)
+	: wxPanel(p_parent), m_controller(new domain::ControllerOutput(this, p_model))
 {
 
 }
 
 DrawPanel::~DrawPanel()
 {
-	delete planeGraphics;
+	delete m_controller;
 }
 void DrawPanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
-	if (planeGraphics->IsUsingBuffer())
+	if (m_controller->IsUsingBuffer())
 	{
 		wxBufferedPaintDC bpdc(this);
-		planeGraphics->DrawComponent(bpdc);
+		m_controller->DrawComponent(bpdc);
 	}
-	else 
+	else
 	{
 		wxPaintDC pdc(this);
-		planeGraphics->DrawComponent(pdc);
+		m_controller->DrawComponent(pdc);
 	}
 }
-} // namespace RI_GUI
+} // namespace gui
+} // namespace reseau_interurbain
+

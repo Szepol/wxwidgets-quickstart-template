@@ -15,7 +15,7 @@
 #include <limits>
 #include <numeric>
 
-namespace RI_DOMAIN
+namespace reseau_interurbain
 {
 /**
  * \brief Constructeur du reseau interurbain. Il recoit en entree le nom du reseau et
@@ -290,5 +290,5 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
 
     return composantesConnexes;
 }
-}// namespace RI_DOMAIN
+}// namespace reseau_interurbain
 

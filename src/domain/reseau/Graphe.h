@@ -19,7 +19,7 @@
 #include <list>
 //Vous pouvez ajouter d'autres librairies de la STL
 
-namespace RI_DOMAIN
+namespace reseau_interurbain
 {
 
 /**
@@ -155,4 +155,5 @@ private:
 	//Vous pouvez ajoutez des méthodes privées si vous sentez leur nécessité
     void verifyNode(size_t sommet) const;
 };
-} // namespace RI_DOMAIN
+} // namespace reseau_interurbain
+

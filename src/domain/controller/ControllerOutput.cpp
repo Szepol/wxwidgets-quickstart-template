@@ -1,15 +1,13 @@
-
 /*****************************************************************//**
- * \file    PlaneGraphics.cpp
- * \brief   Code of the plane graphics where the controller
- * communicates with the renderer
+ * \file    ControllerOutput.cpp
+ * \brief   
  * 
  * \author  Szepol
  * \date    December 2021
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include "PlaneGraphics.h"
+#include "ControllerOutput.h"
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -26,13 +24,18 @@
 #include "wx/dcps.h"
 #endif
 
-namespace RI_DOMAIN 
+namespace reseau_interurbain
 {
-PlaneGraphics::PlaneGraphics(wxPanel* parent) : m_parent(parent)
+namespace domain
 {
+ControllerOutput::ControllerOutput(wxPanel* parent, Model* p_model) : m_parent(parent), m_model(p_model)
+{
+#if wxUSE_DC_TRANSFORM_MATRIX
+	m_useAffineMatrix = true;
+#endif
 }
 // TODO : Render all the items in the controller
-void PlaneGraphics::DrawComponent(wxDC& pdc)
+void ControllerOutput::DrawComponent(wxDC& pdc)
 {
 	if (m_parent == NULL)
 		return;
@@ -67,5 +70,24 @@ void PlaneGraphics::DrawComponent(wxDC& pdc)
 	wxDC& dc = pdc;
 #endif 
 
+	if (m_useAffineMatrix)
+		dc.SetTransformMatrix(*(m_model->GetAffineMatrix()));
+
+	DrawGrid(dc);
 }
-} // namespace RI_DOMAIN
+
+void ControllerOutput::DrawGrid(wxDC& dc)
+{
+#if wxUSE_GRAPHICS_CONTEXT
+	if (m_renderer)
+	{
+		wxGCDC& gdc = (wxGCDC&)dc;
+		wxGraphicsContext* gc = gdc.GetGraphicsContext();
+		wxGraphicsPath pth;
+	}
+#endif
+	dc.DrawText(wxT("TEST"), wxPoint(50, 50));
+}
+} // namespace domain
+} // namespace reseau_interurbain
+

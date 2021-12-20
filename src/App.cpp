@@ -21,8 +21,9 @@
 #define MINIMUM_SIZE_HEIGHT 720
 #define MINIMUM_SIZE_WIDTH 1280
 
+namespace reseau_interurbain
+{
 wxIMPLEMENT_APP(App);
-
 bool App::OnInit()
 {
     if (!wxApp::OnInit())
@@ -34,9 +35,11 @@ bool App::OnInit()
 
     ::wxInitAllImageHandlers();
 
-    RI_GUI::MainWindowFrame* Frame = new RI_GUI::MainWindowFrame(NULL);
+    gui::MainWindowFrame* Frame = new gui::MainWindowFrame(NULL);
     Frame->SetMinSize(wxSize(MINIMUM_SIZE_WIDTH, MINIMUM_SIZE_HEIGHT));
     SetTopWindow(Frame);
 
     return true;
 }
+} // namespace reseau_interurbain
+

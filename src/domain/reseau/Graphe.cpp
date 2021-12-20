@@ -12,7 +12,7 @@
 #include "Graphe.h"
 #include <algorithm>
 
-namespace RI_DOMAIN
+namespace reseau_interurbain
 {
 /**
 * \brief Constructeur avec parametres de notre graphe. Il prend en entre un nombre de sommet et initialise
@@ -200,4 +200,4 @@ void Graphe::verifyNode(size_t sommet) const
     if (sommet >= nbSommets)
         throw std::logic_error("Utilise un sommet inexistant");
 }
-} // namespace RI_DOMAIN
+} // namespace reseau_interurbain

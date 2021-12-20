@@ -9,6 +9,8 @@
  *********************************************************************/
 
 #include "MainWindowFrame.h"
+#include "../domain/controller/ControllerInput.h"
+#include "../domain/controller/Model.h"
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -16,9 +18,11 @@
 #endif
 
 
-namespace RI_GUI 
+namespace reseau_interurbain
 {
-inline wxString wxBuildInfo() 
+namespace gui
+{
+inline wxString wxBuildInfo()
 {
     wxString build;
 
@@ -33,29 +37,37 @@ inline wxString wxBuildInfo()
 #else
     build << wxT("-AINSI build");
 #endif
-    
+
     return build;
 }
 
-wxBEGIN_EVENT_TABLE(MainWindowFrame,wxFrame)
-    EVT_CLOSE(MainWindowFrame::OnCloseWindow)
-    // TODO : Lock the ratio when resizing the window
-    EVT_MENU(wxID_EXIT, MainWindowFrame::OnExit)
-    EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
+wxBEGIN_EVENT_TABLE(MainWindowFrame, wxFrame)
+EVT_CLOSE(MainWindowFrame::OnCloseWindow)
+// TODO : Lock the ratio when resizing the window
+EVT_MENU(wxID_EXIT, MainWindowFrame::OnExit)
+EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
 wxEND_EVENT_TABLE()
 
 MainWindowFrame::MainWindowFrame(wxWindow* parent, wxWindowID id) :
-    wxFrame(parent, id, wxTheApp->GetAppName()) 
+    wxFrame(parent, id, wxTheApp->GetAppName())
 {
+    // We need to share same model object with both the ControllerInput and ControllerOutput
+#if wxUSE_DC_TRANSFORM_MATRIX
+    domain::Model* t_model = new domain::Model(new wxAffineMatrix2D());
+#else
+    domain::Model* t_model = new domain::Model();
+#endif
+    m_controller = new domain::ControllerInput(t_model);
+
     // Initialize menu bar
     InitMenu();
     SetBackgroundColour(wxColor(120, 150, 200));
 
     wxBoxSizer* bSizerVertical = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* bSizerHorizontal = new wxBoxSizer(wxHORIZONTAL);
-    wxPanel* m_drawPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Drawing panel
+    m_drawPanel = new DrawPanel(this, t_model);
     wxPanel* m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Information panel
-    
+
     // Horizontal sizer on top, contains drawing Panel and side panel
     bSizerVertical->Add(bSizerHorizontal, 1, wxEXPAND | wxALL, 5);
     bSizerHorizontal->Add(m_drawPanel, 4, wxEXPAND | wxALL, 5);
@@ -64,15 +76,20 @@ MainWindowFrame::MainWindowFrame(wxWindow* parent, wxWindowID id) :
     m_sidePanel->SetBackgroundColour(wxColor(0, 0, 0));
 
 
-    
+
     SetSizer(bSizerVertical);
     Layout();
     Maximize();
-    
+
     Show();
 }
 
-void MainWindowFrame::InitMenu() 
+MainWindowFrame::~MainWindowFrame()
+{
+    delete m_controller;
+}
+
+void MainWindowFrame::InitMenu()
 {
     wxMenu* fileMenu = new wxMenu();
     wxMenu* editMenu = new wxMenu();
@@ -89,23 +106,25 @@ void MainWindowFrame::InitMenu()
     SetMenuBar(mainMenuBar);
 }
 
-void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event)) 
+void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 {
     static bool destroyed = false;
     if (destroyed)
         return;
 
     this->Destroy();
-    
+
     destroyed = true;
 }
-void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event)) 
+void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
     Close(true);
 }
 
-void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) 
+void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(wxT("Version : ReseauInterurbain-v0.00") + wxBuildInfo(), wxT("Information"));
 }
-} // namespace RI_GUI
+} // namespace gui
+} // namespace reseau_interurbain
+
