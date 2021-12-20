@@ -15,42 +15,42 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\App.cpp">
+    <ClCompile Include="..\..\src\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\MainWindowFrame.cpp">
+    <ClCompile Include="..\..\src\gui\MainWindowFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\DrawPanel.cpp">
+    <ClCompile Include="..\..\src\gui\DrawPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\domain\controller\PlaneGraphics.cpp">
+    <ClCompile Include="..\..\src\domain\controller\PlaneGraphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\domain\reseau\ReseauInterurbain.cpp">
+    <ClCompile Include="..\..\src\domain\reseau\ReseauInterurbain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\domain\reseau\Graphe.cpp">
+    <ClCompile Include="..\..\src\domain\reseau\Graphe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\App.h">
+    <ClInclude Include="..\..\src\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\MainWindowFrame.h">
+    <ClInclude Include="..\..\src\gui\MainWindowFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\DrawPanel.h">
+    <ClInclude Include="..\..\src\gui\DrawPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\domain\controller\PlaneGraphics.h">
+    <ClInclude Include="..\..\src\domain\controller\PlaneGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\domain\reseau\Graphe.h">
+    <ClInclude Include="..\..\src\domain\reseau\Graphe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\domain\reseau\ReseauInterurbain.h">
+    <ClInclude Include="..\..\src\domain\reseau\ReseauInterurbain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

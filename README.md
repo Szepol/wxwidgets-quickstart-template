@@ -27,7 +27,7 @@ vcpkg install wxwidgets
 ```
 Pour compiler le projet : 
 
-Simplement ouvrir le fichier `ReseauInterurbain\ReseauInterurbain.sln`, sélectionner la configuration appropriée et construire la solution.
+Simplement ouvrir le fichier `build\msw\ReseauInterurbain.sln`, sélectionner la configuration appropriée et construire la solution.
 
 ## License
 [MIT](https://github.com/Szepol/ReseauInterurbain/blob/main/LICENSE)
