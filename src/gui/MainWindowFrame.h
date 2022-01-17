@@ -1,7 +1,7 @@
 /*****************************************************************//**
  * \file    MainWindowFrame.h
  * \brief   Defines the MainWindowFrame that correspond to the main
- * interface that interacts with the user.
+ * interface that communicates with the user.
  * 
  * \author  Szepol
  * \date    December 2021
@@ -10,32 +10,39 @@
 
 #pragma once
 
+#include "View.h"
 #include <wx/frame.h>
 #include <wx/panel.h>
-#include "DrawPanel.h"
 
 namespace reseau_interurbain
 {
-// We use a forward declaration for the controller, this is a design choice to prevent unneeded headers link
 namespace domain
 {
 class ControllerInput;
 }
 namespace gui
 {
+class View;
+/**
+ * \class MainWindowFrame
+ * \brief Class of the interface where most of the input of the informations 
+ * from the user to the domain is done. Is composed of the menu bar, the view and the side panel.
+ * 
+ */
 class MainWindowFrame : public wxFrame
 {
+	friend class View;
 public:
-	MainWindowFrame(wxWindow* parent, wxWindowID id = wxID_ANY);
+	MainWindowFrame(wxWindow* p_parent, wxWindowID p_id = wxID_ANY);
 	~MainWindowFrame();
 
+protected:
 	void OnCloseWindow(wxCloseEvent& event);
 	void OnExit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 
-protected:
 	domain::ControllerInput* m_controller;
-	DrawPanel* m_drawPanel;
+	View* m_view;
 	wxPanel* m_sidePanel;
 
 private:

@@ -1,22 +1,25 @@
 /*****************************************************************//**
  * \file    MainWindowFrame.cpp
  * \brief   Code for MainWindowFrame that correspond to the main
- * interface that interacts with the user.
+ * interface that communicates with the user.
  * 
  * \author  Szepol
  * \date    December 2021
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include "MainWindowFrame.h"
-#include "../domain/controller/ControllerInput.h"
-#include "../domain/controller/Model.h"
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
+#include "MainWindowFrame.h"
+#include "../domain/controller/ControllerInput.h"
+#include "../domain/controller/Model.h"
+#include "../App.h"
+#include <format>
+
+#include "wx/event.h"
 
 namespace reseau_interurbain
 {
@@ -25,7 +28,7 @@ namespace gui
 inline wxString wxBuildInfo()
 {
     wxString build;
-
+    build << APPLICATION_NAME << "-" << VERSION;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
 #elif defined(__UNIX__)
@@ -40,16 +43,22 @@ inline wxString wxBuildInfo()
 
     return build;
 }
-
 wxBEGIN_EVENT_TABLE(MainWindowFrame, wxFrame)
-EVT_CLOSE(MainWindowFrame::OnCloseWindow)
-// TODO : Lock the ratio when resizing the window
-EVT_MENU(wxID_EXIT, MainWindowFrame::OnExit)
-EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
+    EVT_CLOSE(MainWindowFrame::OnCloseWindow)
+    // TODO : Lock the ratio when resizing the window
+    EVT_MENU(wxID_EXIT, MainWindowFrame::OnExit)
+    EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
 wxEND_EVENT_TABLE()
 
-MainWindowFrame::MainWindowFrame(wxWindow* parent, wxWindowID id) :
-    wxFrame(parent, id, wxTheApp->GetAppName())
+/**
+ * \brief MainWindowFrame constructor, initialize the main window frame by creating the menu bar.
+ * view panel and side panel.
+ * 
+ * \param wxWindow* p_parent pointer to parent window
+ * \param wxWindowID p_id window id of the frame
+ */
+MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id) 
+    : wxFrame(p_parent, p_id, wxTheApp->GetAppName())
 {
     // We need to share same model object with both the ControllerInput and ControllerOutput
 #if wxUSE_DC_TRANSFORM_MATRIX
@@ -65,30 +74,68 @@ MainWindowFrame::MainWindowFrame(wxWindow* parent, wxWindowID id) :
 
     wxBoxSizer* bSizerVertical = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* bSizerHorizontal = new wxBoxSizer(wxHORIZONTAL);
-    m_drawPanel = new DrawPanel(this, t_model);
-    wxPanel* m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Information panel
+    m_view = new View(this, t_model);
+    m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Information panel
 
     // Horizontal sizer on top, contains drawing Panel and side panel
     bSizerVertical->Add(bSizerHorizontal, 1, wxEXPAND | wxALL, 5);
-    bSizerHorizontal->Add(m_drawPanel, 4, wxEXPAND | wxALL, 5);
-    m_drawPanel->SetBackgroundColour(wxColor(255, 255, 255));
+    bSizerHorizontal->Add(m_view, 4, wxEXPAND | wxALL, 5);
     bSizerHorizontal->Add(m_sidePanel, 1, wxEXPAND | wxALL, 5);
+
+    // Sets background color
+    m_view->SetBackgroundColour(wxColor(255, 255, 255));
     m_sidePanel->SetBackgroundColour(wxColor(0, 0, 0));
-
-
 
     SetSizer(bSizerVertical);
     Layout();
     Maximize();
-
     Show();
 }
-
+/**
+ * \brief MainWindowFrame destructor
+ * 
+ */
 MainWindowFrame::~MainWindowFrame()
 {
     delete m_controller;
 }
+/**
+ * \brief OnCloseWindow handles the X button event to close the window.
+ * 
+ * \param wxCloseEvent& WXUNUSED 
+ */
+void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
+{
+    static bool destroyed = false;
+    if (destroyed)
+        return;
 
+    this->Destroy();
+
+    destroyed = true;
+}
+/**
+ * \brief OnExit handles the exit event in the menu bar.
+ * 
+ * \param wxCommandEvent& WXUNUSED
+ */
+void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event))
+{
+    Close(true);
+}
+/**
+ * \brief OnAbout handles the about event in the menu bar.
+ * 
+ * \param wxCommandEvent& WXUNUSED
+ */
+void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
+    wxMessageBox(wxBuildInfo(), wxT("Information"));
+}
+/**
+ * \brief InitMenu initialize the menu bar
+ *
+ */
 void MainWindowFrame::InitMenu()
 {
     wxMenu* fileMenu = new wxMenu();
@@ -104,26 +151,6 @@ void MainWindowFrame::InitMenu()
     mainMenuBar->Append(helpMenu, wxT("Aide"));
 
     SetMenuBar(mainMenuBar);
-}
-
-void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
-{
-    static bool destroyed = false;
-    if (destroyed)
-        return;
-
-    this->Destroy();
-
-    destroyed = true;
-}
-void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event))
-{
-    Close(true);
-}
-
-void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
-    wxMessageBox(wxT("Version : ReseauInterurbain-v0.00") + wxBuildInfo(), wxT("Information"));
 }
 } // namespace gui
 } // namespace reseau_interurbain

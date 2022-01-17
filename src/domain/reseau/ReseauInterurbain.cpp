@@ -1,13 +1,17 @@
-/**
- * \file ReseauInterurbain.cpp
- * \brief Implémentattion de la classe ReseauInterurbain.
- * \author IFT-2008 & Samuel Lopez-Lachance - 111 281 733
- * \version 0.1
- * \date mars 2021
- *
- *  Travail pratique numéro 2
- *
- */
+/*****************************************************************//**
+ * \file    ReseauInterurbain.cpp
+ * \brief   
+ * 
+ * \author  Szepol
+ * \date    January 2022
+ * \license This project is released under MIT license.
+ *********************************************************************/
+
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
+
 #include <sstream>
 #include <fstream>
 #include "ReseauInterurbain.h"
@@ -17,13 +21,16 @@
 
 namespace reseau_interurbain
 {
+namespace domain
+{
 /**
- * \brief Constructeur du reseau interurbain. Il recoit en entree le nom du reseau et
- * le nombre de ville (Celle-ci est initialiser a 10 par defaut).
- * @param p_nomReseau une chaine de caracteres correspondant au nom du reseau
- * @param p_nbVilles un entier positif (non strict) correspondant au nombre de ville
+ * \brief .
+ * 
+ * \param p_nomReseau
+ * \param p_x
+ * \param p_y
  */
-ReseauInterurbain::ReseauInterurbain(std::string p_nomReseau, size_t p_nbVilles) : nomReseau(p_nomReseau), unReseau(p_nbVilles) 
+ReseauInterurbain::ReseauInterurbain(std::string p_nodeName, int p_x, int p_y, std::string p_networkName = "Sans nom") : m_network(p_nodeName, p_x, p_y), m_networkName(p_networkName)
 {
 
 }
@@ -35,15 +42,6 @@ ReseauInterurbain::~ReseauInterurbain()
 
 }
 
-/**
- * \brief Permet de changer la taille du reseau, cependant la methode supprime toutes les donnees
- * du reseau courant (arcs et noms de sommets). Elle nous permet d'obtenir un nouveau reseau vide de taille desire
- * @param nouvelleTaille entier positive (non strict) qui correspond a la taille desire du reseau
- */
-void ReseauInterurbain::resize(size_t nouvelleTaille) 
-{
-    unReseau.resize(nouvelleTaille);
-}
 /**
  * \brief Permet de charger un reseau avec un fichier selon le format suivant :
  *
@@ -73,55 +71,55 @@ void ReseauInterurbain::resize(size_t nouvelleTaille)
  * 3.5 50 <br>
  * @param fichierEntree correspond au flux du fichier entrant
  */
-void ReseauInterurbain::chargerReseau(std::ifstream & fichierEntree)
+/*void ReseauInterurbain::chargerReseau(std::ifstream& fichierEntree)
 {
     if (!fichierEntree.is_open())
         throw std::logic_error("ReseauInterurbain::chargerReseau: Le fichier n'est pas ouvert !");
 
     std::string buff;
 
-	getline(fichierEntree, nomReseau);
-	nomReseau.erase(0, 20); // Enlève: Reseau Interurbain:
+    getline(fichierEntree, nomReseau);
+    nomReseau.erase(0, 20); // Enlève: Reseau Interurbain:
 
-	int nbVilles;
+    int nbVilles;
 
-	fichierEntree >> nbVilles;
-	getline(fichierEntree, buff); //villes
+    fichierEntree >> nbVilles;
+    getline(fichierEntree, buff); //villes
 
-	unReseau.resize(nbVilles);
+    unReseau.resize(nbVilles);
 
-	getline(fichierEntree, buff); //Liste des villes
+    getline(fichierEntree, buff); //Liste des villes
 
-	size_t i = 0;
+    size_t i = 0;
 
     getline(fichierEntree, buff); //Premiere ville
 
-    while(buff != "Liste des trajets:")
+    while (buff != "Liste des trajets:")
     {
         unReseau.nommer(i, buff);
         getline(fichierEntree, buff);
         i++;
     }
 
-    while(!fichierEntree.eof())
+    while (!fichierEntree.eof())
     {
         getline(fichierEntree, buff);
-		std::string source = buff;
-		getline(fichierEntree, buff);
-		std::string destination = buff;
+        std::string source = buff;
+        getline(fichierEntree, buff);
+        std::string destination = buff;
 
-		getline(fichierEntree, buff);
-		std::istringstream iss(buff);
+        getline(fichierEntree, buff);
+        std::istringstream iss(buff);
 
-		float duree;
-		iss >> duree;
+        float duree;
+        iss >> duree;
 
-		float cout;
-		iss >> cout;
+        float cout;
+        iss >> cout;
 
-		unReseau.ajouterArc(unReseau.getNumeroSommet(source), unReseau.getNumeroSommet(destination), duree, cout);
-	}
-}
+        unReseau.ajouterArc(unReseau.getNumeroSommet(source), unReseau.getNumeroSommet(destination), duree, cout);
+    }
+}*/
 
 /**
  * \brief Algorithme de dijsktra qui permet de retrouver le plus court chemin entre deux villes en utilisant soit la durée
@@ -134,34 +132,41 @@ void ReseauInterurbain::chargerReseau(std::ifstream & fichierEntree)
  * @return Retourne le chemin au sommet de destination, le chemin permet de determiner si il existe un plus court chemin entre
  * le point d'origine et le point de destination, le trajet parcourut, la duree et le cout.
  */
-Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& origine, const std::string& destination, bool dureeCout) const 
+Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, const std::string& p_dest, bool dureeCout) const
 {
     // On initialize chaque sommet du chemin avec duree et cout total infini et reussi a faux
-    std::vector<Chemin> nodes(unReseau.getNombreSommets(),
-        {std::vector<std::string>(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), false});
+    std::vector<Node*> unsolvedNodes(m_network.GetAllNodes());
+    std::map<Node*, Chemin> nodes;
+    for (auto it = unsolvedNodes.begin(); it != unsolvedNodes.end(); it++)
+    {
+        nodes[*it] = { std::vector<std::string>(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), false };
+        // Remove the origin node from unsolved node vector
+        if ((*it)->GetName() == p_origin)
+        {
+            unsolvedNodes.erase(it);
+            it--;
+        }
+    }
 
     // On met le sommet d'origine a zero (donc notre sommet de depart)
-    nodes.at(unReseau.getNumeroSommet(origine)).dureeTotale = 0;
-    nodes.at(unReseau.getNumeroSommet(origine)).coutTotal = 0;
+    nodes.at(m_network.GetNode(p_origin)).dureeTotale = 0;
+    nodes.at(m_network.GetNode(p_origin)).coutTotal = 0;
 
-    // Initialise l'ensemble des sommets non solutionnes
-    std::vector<size_t> unsolved(unReseau.getNombreSommets());
-    std::iota(unsolved.begin(), unsolved.end(), 0);
-
-    std::function<std::vector<size_t>::iterator (std::vector<size_t>&)> min;
-    std::function<std::vector<size_t>(std::vector<size_t>)> adj;
+    std::function<std::vector<Node*>::iterator(std::vector<Node*>&)> min;
+    std::function<std::vector<Node*>(std::vector<Node*>)> adj;
 
     // Fonction lambda pour trouver la valeur minimal des sommets qui se trouve dans
     // l'ensemble des sommets non solutionnes
-    min = [&dureeCout, &nodes] (std::vector<size_t>& unsolved) {
+    min = [&dureeCout, &nodes](std::vector<Node*>& unsolved) {
         auto temp = std::make_pair(unsolved.end(), std::numeric_limits<float>::max());
-        for(auto n = unsolved.begin(); n != unsolved.end() ; n++) {
+        for (auto n = unsolved.begin(); n != unsolved.end(); n++) {
             if (!nodes[*n].reussi) {
                 if (dureeCout) {
                     if (nodes[*n].dureeTotale < temp.second) {
                         temp = std::make_pair(n, nodes[*n].dureeTotale);
                     }
-                } else {
+                }
+                else {
                     if (nodes[*n].coutTotal < temp.second) {
                         temp = std::make_pair(n, nodes[*n].coutTotal);
                     }
@@ -173,8 +178,8 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& origine, co
 
     // Fonction lambda qui prend un vecteur (sommets adjacents) et effectue un filtrage
     // retournant un nouveau vecteur de sommets qui ne sont pas solutionnes
-    adj = [&nodes] (const std::vector<size_t>& adjacent) {
-        std::vector<size_t> temp;
+    adj = [&nodes](const std::vector<Node*>& adjacent) {
+        std::vector<Node*> temp;
         for (auto n : adjacent) {
             if (!nodes[n].reussi)
                 temp.push_back(n);
@@ -184,44 +189,45 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& origine, co
 
     // Algorithme de dijsktra qui mets a jours le plus court chemin entre
     // le point de depart et chaque points de notre graphe
-    while(!unsolved.empty()) {
-        auto u = min(unsolved);
-        if (u == unsolved.end())
+    while (!unsolvedNodes.empty()) {
+        auto u = min(unsolvedNodes);
+        if (u == unsolvedNodes.end())
             break;
         nodes[*u].reussi = true;
 
-        for(auto& n : adj(unReseau.listerSommetsAdjacents(*u)))
+        for (auto& n : adj(m_network.GetAdjNodes(*u)))
         {
             if (dureeCout) {
-                float temp = nodes[*u].dureeTotale + unReseau.getPonderationsArc(*u, n).duree;
+                float temp = nodes[*u].dureeTotale + m_network.GetPonderationsArc(*u, n).duree;
                 if (temp < nodes[n].dureeTotale) {
                     nodes[n].dureeTotale = temp;
                     nodes[n].listeVilles.clear();
                     for (auto& t : nodes[*u].listeVilles)
                         nodes[n].listeVilles.push_back(t);
-                    nodes[n].listeVilles.push_back(unReseau.getNomSommet(*u));
+                    nodes[n].listeVilles.push_back(m_network.GetNodeName(*u));
                 }
-            } else {
-                float temp = nodes[*u].coutTotal + unReseau.getPonderationsArc(*u, n).cout;
+            }
+            else {
+                float temp = nodes[*u].coutTotal + m_network.GetPonderationsArc(*u, n).cout;
                 if (temp < nodes[n].coutTotal) {
                     nodes[n].coutTotal = temp;
                     nodes[n].listeVilles.clear();
                     for (auto& t : nodes[*u].listeVilles)
                         nodes[n].listeVilles.push_back(t);
-                    nodes[n].listeVilles.push_back(unReseau.getNomSommet(*u));
+                    nodes[n].listeVilles.push_back(m_network.GetNodeName(*u));
                 }
             }
         }
-        unsolved.erase(u);
+        unsolvedNodes.erase(u);
     }
 
     // Puisque dijsktra n'inclus pas le sommet de fin dans la trace de celle-ci on ajoute la destination
     // a chaque trace
-    for (int i = 0; i < unReseau.getNombreSommets(); i++) {
-        nodes[i].listeVilles.push_back(unReseau.getNomSommet(i));
+    for (auto it = m_network.GetAllNodes().begin(); it != m_network.GetAllNodes().end(); it++) {
+        nodes[*it].listeVilles.push_back(m_network.GetNodeName(*it));
     }
 
-    return nodes.at(unReseau.getNumeroSommet(destination));
+    return nodes.at(m_network.GetNode(p_dest));
 }
 /**
  * \brief Algorithme de Kosaraju qui permet de retrouver les  différentes composantes fortement connexes du réseau.
@@ -230,23 +236,24 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& origine, co
  */
 std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
     std::vector<std::vector<std::string>> composantesConnexes;
-    std::vector<bool> visited(unReseau.getNombreSommets(), false);
+    std::map<Node*, bool> visited;
 
     // Obtient le graphe inverse de notre graphe de depart (unReseau)
-    std::vector<std::vector<size_t>> inverse(unReseau.getNombreSommets());
-    for(int i = 0; i < unReseau.getNombreSommets(); i++)
+    std::map<Node*, std::vector<Node*>> inverse;
+    for (auto it = m_network.GetAllNodes().begin(); it != m_network.GetAllNodes().end(); it++)
     {
-        for (auto j : unReseau.listerSommetsAdjacents(i))
+        visited[*it] = false;
+        for (auto j : m_network.GetAdjNodes(*it))
         {
-            inverse.at(j).push_back(i);
+            inverse[j].push_back(*it);
         }
     }
 
     // Definition de la fonction lambda explore qui effectue un parcours en profondeur complet du graphe inverse
     // afin d'obtenir un empilement correspondant au parcours de celui-ci (appeler plus bas)
-    std::list<size_t> pile;
-    std::function<void(size_t)> explore;
-    explore = [&inverse, &visited, &pile, &explore] (size_t x) {
+    std::list<Node*> pile;
+    std::function<void(Node*)> explore;
+    explore = [&inverse, &visited, &pile, &explore](Node* x) {
         if (!visited[x]) {
             visited[x] = true;
             for (auto& n : inverse[x]) {
@@ -259,18 +266,18 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
     // Trouve les composantes puits. Empile le parcours en profondeur complet du graphe inverse sur une pile
     for (auto it = visited.begin(); it != visited.end(); ++it)
     {
-        if (!visited[std::distance(visited.begin(),it)])
-            explore(std::distance(visited.begin(),it));
+        if (!(it->second))
+            explore(it->first);
     }
 
     // Redefinition de la fonction lambda explore pour effectuer un parcours en profondeur complet du graphe (appeler plus bas)
     std::vector<std::string> parcours;
-    auto& reseau = unReseau;
-    explore = [&reseau, &visited, &parcours, &explore] (size_t x) {
-        parcours.push_back(reseau.getNomSommet(x));
+    auto& network = m_network;
+    explore = [&network, &visited, &parcours, &explore](Node* x) {
+        parcours.push_back(network.GetNodeName(x));
         if (visited[x]) {
             visited[x] = false;
-            for (auto& n : reseau.listerSommetsAdjacents(x)) {
+            for (auto& n : network.GetAdjNodes(x)) {
                 if (visited[n])
                     explore(n);
             }
@@ -278,10 +285,10 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
     };
     // Trouve les ensembles fortement connexe. Fait un parcours en profondeur complet du graphe,
     // mais selon l’ordre des nœuds empilés par le parcours du graphe inverse
-    while(!pile.empty()) {
-        size_t n = pile.back();
+    while (!pile.empty()) {
+        auto n = pile.back();
         pile.pop_back();
-        if(visited.at(n)) {
+        if (visited.at(n)) {
             explore(n);
             composantesConnexes.push_back(parcours);
             parcours.clear();
@@ -290,5 +297,5 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
 
     return composantesConnexes;
 }
-}// namespace reseau_interurbain
-
+} // namespace domain
+} // namespace reseau_interurbain

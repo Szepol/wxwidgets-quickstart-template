@@ -7,12 +7,12 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include "ControllerOutput.h"
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+
+#include "ControllerOutput.h"
 
 #include "wx/dcbuffer.h"
 #include "wx/dcgraph.h"
@@ -23,6 +23,7 @@
 #if wxUSE_POSTSCRIPT
 #include "wx/dcps.h"
 #endif
+
 
 namespace reseau_interurbain
 {
@@ -86,7 +87,46 @@ void ControllerOutput::DrawGrid(wxDC& dc)
 		wxGraphicsPath pth;
 	}
 #endif
-	dc.DrawText(wxT("TEST"), wxPoint(50, 50));
+	wxPoint2DDouble origin = wxPoint(0, 0);
+	int width;
+	int height;
+	dc.GetSize(&width, &height);
+	wxPoint2DDouble limit = wxPoint(width, height);
+	if (m_useAffineMatrix)
+	{
+		wxAffineMatrix2D* mtx = m_model->GetAffineMatrix();
+		wxMatrix2D* ref_mtx = new wxMatrix2D();
+		// Inverse affine matrix
+		mtx->Invert();
+		// Get the matrix
+		mtx->Get(ref_mtx, nullptr);
+		// If the scale is too big we disable the zooming to prevent
+		// frame rate dropping really low when scaling is too high
+		if (ref_mtx->m_11 > 1.5f || ref_mtx->m_22 > 1.5f)
+		{
+			ref_mtx->m_11 = 1.5f;
+			ref_mtx->m_22 = 1.5f;
+			m_model->EnableZoomOut(false);
+		}
+		// Find the logical position by transforming 
+		// the point with the inverse matrix
+		limit = mtx->TransformPoint(limit);
+		origin = mtx->TransformPoint(origin);
+		// Reverse affine matrix
+		mtx->Invert();
+	}
+	// Draw the grid
+	for (int x = floor(origin.m_x /50) * 50; x <= floor(limit.m_x); x += 50)
+	{
+		for (int y = floor(origin.m_y / 50) * 50; y <= floor(limit.m_y); y += 50)
+		{
+			wxBrush brush = dc.GetBrush();
+			brush.SetColour(wxColor(211, 211, 211));
+			dc.SetPen(*wxGREY_PEN);
+			dc.SetBrush(brush);
+			dc.DrawRectangle(x, y, 50, 50);
+		}
+	}
 }
 } // namespace domain
 } // namespace reseau_interurbain

@@ -1,6 +1,6 @@
 # ReseauInterurbain
 
-*ReseauInterurbain* est une application graphique multiplateforme qui permet à l'utilisateur de créer un réseau de transport interurbain et d'effectuer des simulations. Le but de l'application est de pouvoir visualiser à l'aide d'une interface graphique differentes implémentations  d'algorithmes du plus court chemin.
+*ReseauInterurbain* est une application graphique multiplateforme qui permet à l'utilisateur de créer un réseau de transport interurbain et d'effectuer des simulations. Le but de l'application est de pouvoir visualiser differentes implémentations d'algorithmes du plus court chemin.
 
 ## Installation
 

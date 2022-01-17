@@ -27,11 +27,13 @@ public:
 #endif
 	~Model();
 
-
+	void EnableZoomOut(bool p_use = true);
+	bool GetZoomOut();
 private:
 #if wxUSE_DC_TRANSFORM_MATRIX
 	wxAffineMatrix2D* m_mtx;
 #endif
+	bool m_useZoomOut;
 
 };
 } // namespace domain

@@ -17,10 +17,6 @@
 
 #include "gui/MainWindowFrame.h"
 
-#define APPLICATION_NAME L"Reseau Interurbain"
-#define MINIMUM_SIZE_HEIGHT 720
-#define MINIMUM_SIZE_WIDTH 1280
-
 namespace reseau_interurbain
 {
 wxIMPLEMENT_APP(App);
