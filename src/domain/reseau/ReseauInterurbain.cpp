@@ -24,18 +24,19 @@ namespace reseau_interurbain
 namespace domain
 {
 /**
- * \brief .
+ * \brief Interurban network constructor, initializes the graph requiring a node.
  * 
- * \param p_nomReseau
- * \param p_x
- * \param p_y
+ * \param p_nomReseau string Name of the node
+ * \param p_x int Position along the horizontal axis
+ * \param p_y int Position along the vertical axis
+ * \param p_networkName string Name of the interurban network
  */
 ReseauInterurbain::ReseauInterurbain(std::string p_nodeName, int p_x, int p_y, std::string p_networkName = "Sans nom") : m_network(p_nodeName, p_x, p_y), m_networkName(p_networkName)
 {
 
 }
 /**
- * \brief Destructeur par default de notre reseau interurbain.
+ * \brief Default destructor for the interurban network.
  */
 ReseauInterurbain::~ReseauInterurbain()
 {
@@ -198,7 +199,7 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
         for (auto& n : adj(m_network.GetAdjNodes(*u)))
         {
             if (dureeCout) {
-                float temp = nodes[*u].dureeTotale + m_network.GetPonderationsArc(*u, n).duree;
+                float temp = nodes[*u].dureeTotale + m_network.GetPonderationsArc(*u, n).duration;
                 if (temp < nodes[n].dureeTotale) {
                     nodes[n].dureeTotale = temp;
                     nodes[n].listeVilles.clear();
@@ -208,7 +209,7 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
                 }
             }
             else {
-                float temp = nodes[*u].coutTotal + m_network.GetPonderationsArc(*u, n).cout;
+                float temp = nodes[*u].coutTotal + m_network.GetPonderationsArc(*u, n).cost;
                 if (temp < nodes[n].coutTotal) {
                     nodes[n].coutTotal = temp;
                     nodes[n].listeVilles.clear();
@@ -288,7 +289,7 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
     while (!pile.empty()) {
         auto n = pile.back();
         pile.pop_back();
-        if (visited.at(n)) {
+        if (visited[n]) {
             explore(n);
             composantesConnexes.push_back(parcours);
             parcours.clear();

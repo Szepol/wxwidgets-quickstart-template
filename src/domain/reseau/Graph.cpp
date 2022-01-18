@@ -20,18 +20,18 @@ namespace reseau_interurbain
 namespace domain
 {
 /**
- * \brief .
+ * \brief Constructor for the graph class, must be initialized with a node
  * 
- * \param p_name
- * \param p_x
- * \param p_y
+ * \param p_name Name of the node in the graph
+ * \param p_x Position along the horizontal axis
+ * \param p_y Position along the vertical axis
  */
 Graph::Graph(const std::string& p_name, int p_x, int p_y) : m_vNodes(1, new Node(p_name, p_x, p_y)), m_nArcs(0)
 {
     
 }
 /**
- * \brief .
+ * \brief Destructor for the graph class
  * 
  */
 Graph::~Graph()
@@ -43,10 +43,11 @@ Graph::~Graph()
     }
 }
 /**
- * \brief .
+ * \brief RenameNode methods allow change a specified node's name with a new name passed in argument.
+ * If the pointer of node isn't inside the list of existing null returns true, and false otherwise.
  * 
- * \param p_src
- * \param p_name
+ * \param p_src Node* pointer to the node to rename
+ * \param p_name std::string string of the new name
  */
 bool Graph::RenameNode(Node* p_src, const std::string& p_name)
 {
@@ -56,7 +57,7 @@ bool Graph::RenameNode(Node* p_src, const std::string& p_name)
     return false;
 }
 /**
- * \brief .
+ * \brief 
  * 
  * \param p_src
  * \param p_name

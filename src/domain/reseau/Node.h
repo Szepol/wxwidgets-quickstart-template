@@ -1,6 +1,7 @@
 /*****************************************************************//**
  * \file    Node.h
- * \brief   
+ * \brief   Defines Node class and Ponderations structure, acts as the
+ * most basic element in the interurban network 
  * 
  * \author  Szepol
  * \date    January 2022
@@ -18,23 +19,25 @@ namespace domain
 {
 /**
 * \struct Ponderations
-* \brief Une struture utilisée pour stocker les pondérations utilisées sur les arcs
+* \brief Struct used to store the ponderations used by the arcs
 */
 struct Ponderations
 {
-	float duree;		// La durée du trajet en heures (ex. 3.15 heures entre Québec et Montréal)
-	float cout;			// Le cout du trajet en dollars (ex. 70.50 $ entre Québec et Montréal)
+	float duration;		// Duration of the trip in hours
+	float cost;			// Cost of the trip in dollars
 
 	/**
-	 * @brief Constructeur de la structure ponderation utilisee pour donne une ponderation pour un arc orienter
-	 * connectant deux points
-	 * @param d La duree du trajet en heures
-	 * @param c Le cout du trajet en dollars
+	 * @brief Constructor of the ponderations structure used to give a ponderation to an oriented arc
+	 * connecting 2 nodes
+	 * @param d Duration of trip in hours
+	 * @param c Cost of the trip in dollars
 	 */
-	Ponderations(float d, float c) : duree(d), cout(c) {}
+	Ponderations(float d, float c) : duration(d), cost(c) {}
 };
 /**
- * .
+ * \class Node
+ * \brief Interurban network node stores all the arcs coming out from the node, the position of the node
+ * and the name of the node. 
  */
 class Node
 {
@@ -42,9 +45,9 @@ public:
 	Node(const std::string& p_name, int p_x, int p_y);
 	~Node() {};
 
-	bool AddArc(Node* p_dest, float p_length = 0, float p_cost = 0);
+	bool AddArc(Node* p_dest, float p_duration, float p_cost);
 	bool RemoveArc(Node* p_dest);
-	bool ChangePonderation(Node* p_dest, float p_length = 0, float p_cost = 0);
+	bool ChangePonderation(Node* p_dest, float p_duration, float p_cost);
 	void RenameNode(const std::string& p_name);
 	bool ArcExists(Node* p_dest) const;
 	const std::string& GetName() const;
