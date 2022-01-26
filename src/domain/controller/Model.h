@@ -1,6 +1,7 @@
 /*****************************************************************//**
  * \file    Model.h
- * \brief   
+ * \brief   Defines Model class used by the controller to store all data
+ * used by the domain.
  * 
  * \author  Szepol
  * \date    December 2021
@@ -21,18 +22,14 @@ class Model
 {
 public:
 	Model();
-#if wxUSE_DC_TRANSFORM_MATRIX
 	Model(wxAffineMatrix2D* p_mtx);
 	wxAffineMatrix2D* GetAffineMatrix() { return m_mtx; };
-#endif
 	~Model();
 
 	void EnableZoomOut(bool p_use = true);
-	bool GetZoomOut();
+	bool IsZoomOutEnabled();
 private:
-#if wxUSE_DC_TRANSFORM_MATRIX
 	wxAffineMatrix2D* m_mtx;
-#endif
 	bool m_useZoomOut;
 
 };

@@ -29,7 +29,7 @@ ControllerInput::~ControllerInput()
 }
 void ControllerInput::Zoom(const int p_direction, int p_x, int p_y)
 {
-	if (p_direction > 0 && !m_model->GetZoomOut())
+	if (p_direction > 0 && !m_model->IsZoomOutEnabled())
 		return;
 	wxAffineMatrix2D* mtx = m_model->GetAffineMatrix();
 	wxPoint2DDouble point = wxPoint2DDouble(wxDouble(p_x), wxDouble(p_y));
@@ -47,7 +47,7 @@ void ControllerInput::Zoom(const int p_direction, int p_x, int p_y)
 	}
 	else
 	{
-		if (!m_model->GetZoomOut())
+		if (!m_model->IsZoomOutEnabled())
 			m_model->EnableZoomOut(true);
 		mtx->Translate(point.m_x, point.m_y);
 		mtx->Scale(1.09, 1.09);

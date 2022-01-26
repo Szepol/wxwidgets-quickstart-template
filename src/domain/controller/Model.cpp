@@ -1,6 +1,7 @@
 /*****************************************************************//**
  * \file    Model.cpp
- * \brief   
+ * \brief   Implementation of the Model class used by the controller 
+ * to store all data used by the domain.
  * 
  * \author  Szepol
  * \date    December 2021
@@ -20,16 +21,15 @@ namespace reseau_interurbain
 namespace domain
 {
 /**
- * \brief .
+ * \brief Default Model constructor, zoom is disabled.
  * 
  */
-Model::Model()
+Model::Model() : m_mtx(nullptr), m_useZoomOut(false)
 {
 
 }
-#if wxUSE_DC_TRANSFORM_MATRIX
 /**
- * \brief .
+ * \brief Model constructor using a pointer to an AffineMatrix as parameter to handle zoom transformation.
  * 
  * \param p_mtx
  */
@@ -37,32 +37,30 @@ Model::Model(wxAffineMatrix2D* p_mtx) : m_mtx(p_mtx), m_useZoomOut(true)
 {
 
 }
-#endif
 /**
- * \brief .
+ * \brief Model destructor, if using zoom it handles the deletion of the pointer to the allocated AffineMatrix on the stack
  * 
  */
 Model::~Model()
 {
-#if wxUSE_DC_TRANSFORM_MATRIX
 	delete m_mtx;
-#endif
 }
 /**
- * \brief .
+ * \brief Method used to toggle weither the zoom is enabled or disable.
  * 
- * \param p_use
+ * \param p_use boolean of the logical truth value
  */
 void Model::EnableZoomOut(bool p_use)
 {
-	m_useZoomOut = p_use;
+	if (m_mtx != nullptr)
+		m_useZoomOut = p_use;
 }
 /**
- * \brief .
+ * \brief Method to get weither the zoom is enabled or disabled
  * 
- * \return 
+ * \return bool of the logical truth value
  */
-bool Model::GetZoomOut()
+bool Model::IsZoomOutEnabled()
 {
 	return m_useZoomOut;
 }
