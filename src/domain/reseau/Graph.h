@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "Node.h"
+#include <domain/reseau/Node.h>
 
 namespace reseau_interurbain
 {

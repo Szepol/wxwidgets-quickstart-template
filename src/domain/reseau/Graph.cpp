@@ -7,12 +7,7 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
-#include "Graph.h"
+#include <domain/reseau/Graph.h>
 #include <algorithm>
 
 namespace reseau_interurbain

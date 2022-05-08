@@ -11,7 +11,7 @@
 
 #include <wx/graphics.h>
 #include <wx/panel.h>
-#include "Model.h"
+#include <domain/controller/Model.h>
 
 namespace reseau_interurbain
 {
@@ -22,6 +22,10 @@ class ControllerOutput
 public:
 	ControllerOutput(wxPanel* parent, Model* p_model);
 	~ControllerOutput() {};
+
+#if wxUSE_GRAPHICS_CONTEXT
+	void UseGraphicRenderer(wxGraphicsRenderer* renderer);
+#endif // wxUSE_GRAPHICS_CONTEXT
 
 	bool IsUsingBuffer() { return m_useBuffer; };
 	void EnableAntiAliasing(bool use = true) { m_useAntiAliasing = use; m_parent->Refresh(); }

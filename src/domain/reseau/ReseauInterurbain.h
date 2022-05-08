@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Graph.h"
+#include <domain/reseau/Graph.h>
 #include <iostream>
 #include <string>
 #include <stdexcept>

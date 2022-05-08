@@ -13,16 +13,16 @@
 #include <wx/wx.h>
 #endif
 
-#include "ControllerOutput.h"
+#include <domain/controller/ControllerOutput.h>
 
-#include "wx/dcbuffer.h"
-#include "wx/dcgraph.h"
-#include "wx/graphics.h"
+#include <wx/dcbuffer.h>
+#include <wx/dcgraph.h>
+#include <wx/graphics.h>
 #if wxUSE_SVG
-#include "wx/dcsvg.h"
+#include <wx/dcsvg.h>
 #endif
 #if wxUSE_POSTSCRIPT
-#include "wx/dcps.h"
+#include <wx/dcps.h>
 #endif
 
 
@@ -41,6 +41,11 @@ ControllerOutput::ControllerOutput(wxPanel* parent, Model* p_model) : m_parent(p
 #if wxUSE_DC_TRANSFORM_MATRIX
 	m_useAffineMatrix = true;
 #endif
+#if wxUSE_GRAPHICS_CONTEXT
+	m_renderer = NULL;
+	m_useAntiAliasing = true;
+#endif
+	m_useBuffer = true;
 }
 // TODO : Render all the items in the controller
 void ControllerOutput::DrawComponent(wxDC& pdc)
@@ -139,6 +144,14 @@ void ControllerOutput::DrawGrid(wxDC& dc)
 		}
 	}
 }
+#if wxUSE_GRAPHICS_CONTEXT
+void ControllerOutput::UseGraphicRenderer(wxGraphicsRenderer* renderer)
+{
+	m_renderer = renderer;
+
+	m_parent->Refresh();
+}
+#endif // wxUSE_GRAPHICS_CONTEXT
 } // namespace domain
 } // namespace reseau_interurbain
 

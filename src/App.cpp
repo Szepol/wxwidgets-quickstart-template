@@ -8,14 +8,14 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include "App.h"
+#include <App.h>
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
-#include "gui/MainWindowFrame.h"
+#include <gui/MainWindowFrame.h>
 
 namespace reseau_interurbain
 {

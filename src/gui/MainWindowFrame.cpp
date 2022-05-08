@@ -13,13 +13,13 @@
 #include <wx/wx.h>
 #endif
 
-#include "MainWindowFrame.h"
-#include "../domain/controller/ControllerInput.h"
-#include "../domain/controller/Model.h"
-#include "../App.h"
-#include <format>
+#include <gui/MainWindowFrame.h>
+#include <domain/controller/ControllerInput.h>
+#include <domain/controller/Model.h>
+#include <App.h>
 
-#include "wx/event.h"
+#include <wx/graphics.h>
+#include <wx/event.h>
 
 namespace reseau_interurbain
 {
@@ -28,7 +28,7 @@ namespace gui
 inline wxString wxBuildInfo()
 {
     wxString build;
-    build << APPLICATION_NAME << "-" << VERSION;
+    build << APPLICATION_NAME;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
 #elif defined(__UNIX__)
@@ -76,6 +76,21 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
     wxBoxSizer* bSizerHorizontal = new wxBoxSizer(wxHORIZONTAL);
     m_view = new View(this, t_model);
     m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Information panel
+
+#if wxUSE_GRAPHICS_CONTEXT
+    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDefaultRenderer());
+#if wxUSE_CAIRO
+    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetCairoRenderer());
+#endif // wxUSE_CAIRO
+#ifdef __WXMSW__
+#if wxUSE_GRAPHICS_DIRECT2D
+    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDirect2DRenderer());
+#endif
+#if wxUSE_GRAPHICS_GDIPLUS
+    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetGDIPlusRenderer());
+#endif
+#endif // __WXMSW__
+#endif // wxUSE_GRAPHICS_CONTEXT
 
     // Horizontal sizer on top, contains drawing Panel and side panel
     bSizerVertical->Add(bSizerHorizontal, 1, wxEXPAND | wxALL, 5);
