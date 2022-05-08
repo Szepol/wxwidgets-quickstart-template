@@ -28,7 +28,9 @@ namespace gui
 inline wxString wxBuildInfo()
 {
     wxString build;
-    build << APPLICATION_NAME;
+    wxString version;
+    version << "v" << ReseauInterurbain_VERSION_MAJOR << "." << ReseauInterurbain_VERSION_MINOR;
+    build << APPLICATION_NAME << " " << version;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
 #elif defined(__UNIX__)

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <wx/app.h>
+#include <Version.h>
 
 #define APPLICATION_NAME L"Reseau Interurbain"
 #define MINIMUM_SIZE_HEIGHT 720

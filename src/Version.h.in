@@ -1,0 +1,2 @@
+#define ReseauInterurbain_VERSION_MAJOR @ReseauInterurbain_VERSION_MAJOR@
+#define ReseauInterurbain_VERSION_MINOR @ReseauInterurbain_VERSION_MINOR@
