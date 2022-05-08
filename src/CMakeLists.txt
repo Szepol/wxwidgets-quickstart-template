@@ -1,5 +1,3 @@
-#configure_file(Config.h.in Config.h)
-
 add_library(
 	domain
 	domain/reseau/Graph.cpp
@@ -29,7 +27,6 @@ ENDIF()
 
 target_include_directories(domain PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-#target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}/src")${wxWidgets_INCLUDE_DIRS}
 target_link_libraries(domain PUBLIC ${wxWidgets_LIBRARIES})
 target_link_libraries(gui PRIVATE ${wxWidgets_LIBRARIES} domain)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${wxWidgets_LIBRARIES} gui)
