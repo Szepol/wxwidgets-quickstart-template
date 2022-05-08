@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "View.h"
+#include <gui/View.h>
 #include <wx/frame.h>
 #include <wx/panel.h>
 

@@ -12,8 +12,8 @@
 #include <wx/wx.h>
 #endif
 
-#include "ControllerInput.h"
-#include "wx/affinematrix2d.h"
+#include <domain/controller/ControllerInput.h>
+#include <wx/affinematrix2d.h>
 
 namespace reseau_interurbain
 {

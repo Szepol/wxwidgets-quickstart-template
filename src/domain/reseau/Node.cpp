@@ -8,12 +8,7 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
-#include "Node.h"
+#include <domain/reseau/Node.h>
 
 namespace reseau_interurbain
 {
@@ -132,10 +127,9 @@ std::vector<Node*> Node::GetAdjNodes() const
  */
 const Ponderations& Node::GetPonderation(Node * p_dest) const
 {
+	// TODO: Define behavior when passing unconnected Node.
 	auto it = std::find_if(m_vArcs.begin(), m_vArcs.end(),
 		[&p_dest](const Arc& x) {return x.m_dest == p_dest; });
-	if (it == m_vArcs.end())
-		return Ponderations(0, 0);
 	return it->m_weight;
 }
 /**

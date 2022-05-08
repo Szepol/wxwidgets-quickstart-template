@@ -13,11 +13,11 @@
 #include <wx/wx.h>
 #endif
 
-#include "View.h"
-#include "../domain/controller/ControllerOutput.h"
-#include "../domain/controller/ControllerInput.h"
-#include "../domain/controller/Model.h"
-#include "wx/dcbuffer.h"
+#include <gui/View.h>
+#include <domain/controller/ControllerOutput.h>
+#include <domain/controller/ControllerInput.h>
+#include <domain/controller/Model.h>
+#include <wx/dcbuffer.h>
 
 namespace reseau_interurbain
 {
@@ -113,6 +113,12 @@ void View::OnEraseBackground(wxEraseEvent& WXUNUSED(event))
 {
 
 }
+#if wxUSE_GRAPHICS_CONTEXT
+void View::UseGraphicRenderer(wxGraphicsRenderer* renderer)
+{
+	m_controller->UseGraphicRenderer(renderer);
+}
+#endif // wxUSE_GRAPHICS_CONTEXT
 } // namespace gui
 } // namespace reseau_interurbain
 

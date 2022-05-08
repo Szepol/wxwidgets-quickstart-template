@@ -7,14 +7,9 @@
  * \license This project is released under MIT license.
  *********************************************************************/
 
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
 #include <sstream>
 #include <fstream>
-#include "ReseauInterurbain.h"
+#include <domain/reseau/ReseauInterurbain.h>
 #include <functional>
 #include <limits>
 #include <numeric>

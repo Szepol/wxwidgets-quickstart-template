@@ -12,6 +12,7 @@
 
 #include "MainWindowFrame.h"
 #include <wx/panel.h>
+#include <wx/graphics.h>
 
 namespace reseau_interurbain
 {
@@ -33,7 +34,9 @@ class View : public wxPanel
 public:
 	View(wxFrame* p_parent, domain::Model* p_model);
 	~View();
-
+#if wxUSE_GRAPHICS_CONTEXT
+	void UseGraphicRenderer(wxGraphicsRenderer* renderer);
+#endif // wxUSE_GRAPHICS_CONTEXT
 protected:
 	void OnZoom(wxMouseEvent& event);
 	void UpdateMouse(wxMouseEvent& event);

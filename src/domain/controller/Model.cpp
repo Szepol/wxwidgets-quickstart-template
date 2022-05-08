@@ -14,7 +14,7 @@
 #include <wx/wx.h>
 #endif
 
-#include "Model.h"
+#include <domain/controller/Model.h>
 
 namespace reseau_interurbain
 {
