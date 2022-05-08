@@ -430,7 +430,22 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# CMakeSettings
+# CMakeFiles
 CMakeSettings.json
 build/*
 out/*
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+VSInheritEnvironnements.txt
+build.ninja
+.ninja_log
+.ninja_deps
