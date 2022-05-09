@@ -1,0 +1,14 @@
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+add_executable(
+	NodeTest
+	NodeTest.cpp
+)
+target_link_libraries(
+	NodeTest
+	gtest_main
+	domain
+)
+
+include(GoogleTest)
+gtest_discover_tests(NodeTest)

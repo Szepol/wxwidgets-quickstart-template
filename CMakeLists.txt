@@ -13,8 +13,28 @@ set(wxWidgets_wxrc_EXECUTABLE "${WXLIB}/wxrc.exe")
 SET(wxWidgets_CONFIGURATION mswud)
 set(wxWidgets_EXCLUDE_COMMON_LIBRARIES FALSE)
 
+include (FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
+)
+
+if (WIN32)
+	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif()
+
+FetchContent_MakeAvailable(googletest)
+
 find_package(wxWidgets 3.1 REQUIRED)
 include(${wxWidgets_USE_FILE})
 
 add_subdirectory(src)
+
+if(BUILD_TESTING)
+	enable_testing ()
+
+	add_subdirectory(test)
+endif()
 

@@ -1,7 +1,7 @@
-#include "../src/domain/reseau/Node.h"
-#include "../src/domain/reseau/Node.cpp"
+#include <domain/reseau/Node.h>
+#include <domain/reseau/Node.cpp>
 #include <string>
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 using namespace std;
 

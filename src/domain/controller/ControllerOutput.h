@@ -1,7 +1,7 @@
 /*****************************************************************//**
  * \file    ControllerOutput.h
- * \brief   
- * 
+ * \brief   Communicates with the model inside the domain to draw the
+ * objects in the canvas
  * \author  Szepol
  * \date    December 2021
  * \license This project is released under MIT license.
