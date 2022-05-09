@@ -1,40 +1,60 @@
-/*****************************************************************//**
- * \file    ReseauInterurbain.cpp
- * \brief   
- * 
- * \author  Szepol
- * \date    January 2022
- * \license This project is released under MIT license.
- *********************************************************************/
+// Copyright 2022 Szepol
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#include <domain/reseau/ReseauInterurbain.h>
 
 #include <sstream>
 #include <fstream>
-#include <domain/reseau/ReseauInterurbain.h>
 #include <functional>
 #include <limits>
 #include <numeric>
+#include <utility>
+#include <algorithm>
+#include <map>
+#include <list>
+#include <vector>
 
-namespace reseau_interurbain
-{
-namespace domain
-{
-ReseauInterurbain::ReseauInterurbain(std::string p_nodeName, int p_x, int p_y, std::string p_networkName = "Sans nom") : m_network(p_nodeName, p_x, p_y), m_networkName(p_networkName)
-{
-
+namespace reseau_interurbain {
+namespace domain {
+ReseauInterurbain::ReseauInterurbain(
+      std::string p_nodeName,
+      int p_x,
+      int p_y,
+      std::string p_networkName = "Sans nom")
+    : m_network(p_nodeName, p_x, p_y), m_networkName(p_networkName) {
 }
-ReseauInterurbain::~ReseauInterurbain()
-{
-
+ReseauInterurbain::~ReseauInterurbain() {
 }
-Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, const std::string& p_dest, bool dureeCout) const
-{
-    std::vector<Node*> unsolvedNodes(m_network.GetAllNodes());
+Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin,
+      const std::string& p_dest, bool dureeCout) const {
+    auto networkNodes = m_network.GetAllNodes();
+    std::vector<Node*> unsolvedNodes(networkNodes);
     std::map<Node*, Chemin> nodes;
-    for (auto it = unsolvedNodes.begin(); it != unsolvedNodes.end(); it++)
-    {
-        nodes[*it] = { std::vector<std::string>(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), false };
-        if ((*it)->GetName() == p_origin)
-        {
+    for (auto it = unsolvedNodes.begin(); it != unsolvedNodes.end(); it++) {
+        nodes[*it] = {
+            std::vector<std::string>(),
+            std::numeric_limits<float>::max(),
+            std::numeric_limits<float>::max(),
+            false
+        };
+        if ((*it)->GetName() == p_origin) {
             unsolvedNodes.erase(it);
             it--;
         }
@@ -47,15 +67,15 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
     std::function<std::vector<Node*>(std::vector<Node*>)> adj;
 
     min = [&dureeCout, &nodes](std::vector<Node*>& unsolved) {
-        auto temp = std::make_pair(unsolved.end(), std::numeric_limits<float>::max());
+        auto temp = std::make_pair(unsolved.end(),
+            std::numeric_limits<float>::max());
         for (auto n = unsolved.begin(); n != unsolved.end(); n++) {
             if (!nodes[*n].reussi) {
                 if (dureeCout) {
                     if (nodes[*n].dureeTotale < temp.second) {
                         temp = std::make_pair(n, nodes[*n].dureeTotale);
                     }
-                }
-                else {
+                } else {
                     if (nodes[*n].coutTotal < temp.second) {
                         temp = std::make_pair(n, nodes[*n].coutTotal);
                     }
@@ -80,10 +100,10 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
             break;
         nodes[*u].reussi = true;
 
-        for (auto& n : adj(m_network.GetAdjNodes(*u)))
-        {
+        for (auto& n : adj(m_network.GetAdjNodes(*u))) {
+            auto weight = m_network.GetPonderationsArc(*u, n);
             if (dureeCout) {
-                float temp = nodes[*u].dureeTotale + m_network.GetPonderationsArc(*u, n).duration;
+                float temp = nodes[*u].dureeTotale + weight.duration;
                 if (temp < nodes[n].dureeTotale) {
                     nodes[n].dureeTotale = temp;
                     nodes[n].listeVilles.clear();
@@ -91,9 +111,8 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
                         nodes[n].listeVilles.push_back(t);
                     nodes[n].listeVilles.push_back(m_network.GetNodeName(*u));
                 }
-            }
-            else {
-                float temp = nodes[*u].coutTotal + m_network.GetPonderationsArc(*u, n).cost;
+            } else {
+                float temp = nodes[*u].coutTotal + weight.cost;
                 if (temp < nodes[n].coutTotal) {
                     nodes[n].coutTotal = temp;
                     nodes[n].listeVilles.clear();
@@ -106,7 +125,7 @@ Chemin ReseauInterurbain::rechercheCheminDijkstra(const std::string& p_origin, c
         unsolvedNodes.erase(u);
     }
 
-    for (auto it = m_network.GetAllNodes().begin(); it != m_network.GetAllNodes().end(); it++) {
+    for (auto it = networkNodes.begin(); it != networkNodes.end(); it++) {
         nodes[*it].listeVilles.push_back(m_network.GetNodeName(*it));
     }
 
@@ -116,12 +135,12 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
     std::vector<std::vector<std::string>> composantesConnexes;
     std::map<Node*, bool> visited;
 
+    auto networkNodes = m_network.GetAllNodes();
+
     std::map<Node*, std::vector<Node*>> inverse;
-    for (auto it = m_network.GetAllNodes().begin(); it != m_network.GetAllNodes().end(); it++)
-    {
+    for (auto it = networkNodes.begin(); it != networkNodes.end(); it++) {
         visited[*it] = false;
-        for (auto j : m_network.GetAdjNodes(*it))
-        {
+        for (auto j : m_network.GetAdjNodes(*it)) {
             inverse[j].push_back(*it);
         }
     }
@@ -138,8 +157,7 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
             pile.push_back(x);
         }
     };
-    for (auto it = visited.begin(); it != visited.end(); ++it)
-    {
+    for (auto it = visited.begin(); it != visited.end(); ++it) {
         if (!(it->second))
             explore(it->first);
     }
@@ -169,5 +187,5 @@ std::vector<std::vector<std::string> > ReseauInterurbain::algorithmeKosaraju() {
 
     return composantesConnexes;
 }
-} // namespace domain
-} // namespace reseau_interurbain
+}  // namespace domain
+}  // namespace reseau_interurbain

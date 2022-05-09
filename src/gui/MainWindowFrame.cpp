@@ -1,12 +1,22 @@
-/*****************************************************************//**
- * \file    MainWindowFrame.cpp
- * \brief   Code for MainWindowFrame that correspond to the main
- * interface that communicates with the user.
- * 
- * \author  Szepol
- * \date    December 2021
- * \license This project is released under MIT license.
- *********************************************************************/
+// Copyright 2022 Szepol
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -21,15 +31,13 @@
 #include <wx/graphics.h>
 #include <wx/event.h>
 
-namespace reseau_interurbain
-{
-namespace gui
-{
-inline wxString wxBuildInfo()
-{
+namespace reseau_interurbain {
+namespace gui {
+inline wxString wxBuildInfo() {
     wxString build;
     wxString version;
-    version << "v" << ReseauInterurbain_VERSION_MAJOR << "." << ReseauInterurbain_VERSION_MINOR;
+    version << "v" << ReseauInterurbain_VERSION_MAJOR << "."
+        << ReseauInterurbain_VERSION_MINOR;
     build << APPLICATION_NAME << " " << version;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
@@ -47,16 +55,14 @@ inline wxString wxBuildInfo()
 }
 wxBEGIN_EVENT_TABLE(MainWindowFrame, wxFrame)
     EVT_CLOSE(MainWindowFrame::OnCloseWindow)
-    // TODO : Lock the ratio when resizing the window
+    // TODO(Szepol): Lock the ratio when resizing the window
     EVT_MENU(wxID_EXIT, MainWindowFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
 wxEND_EVENT_TABLE()
 
 
-MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id) 
-    : wxFrame(p_parent, p_id, wxTheApp->GetAppName())
-{
-    // We need to share same model object with both the ControllerInput and ControllerOutput
+MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
+      : wxFrame(p_parent, p_id, wxTheApp->GetAppName()) {
 #if wxUSE_DC_TRANSFORM_MATRIX
     domain::Model* t_model = new domain::Model(new wxAffineMatrix2D());
 #else
@@ -71,13 +77,13 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
     wxBoxSizer* bSizerVertical = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* bSizerHorizontal = new wxBoxSizer(wxHORIZONTAL);
     m_view = new View(this, t_model);
-    m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize); // Information panel
+    m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 #if wxUSE_GRAPHICS_CONTEXT
     m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDefaultRenderer());
 #if wxUSE_CAIRO
     m_view->UseGraphicRenderer(wxGraphicsRenderer::GetCairoRenderer());
-#endif // wxUSE_CAIRO
+#endif  // wxUSE_CAIRO
 #ifdef __WXMSW__
 #if wxUSE_GRAPHICS_DIRECT2D
     m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDirect2DRenderer());
@@ -85,8 +91,8 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
 #if wxUSE_GRAPHICS_GDIPLUS
     m_view->UseGraphicRenderer(wxGraphicsRenderer::GetGDIPlusRenderer());
 #endif
-#endif // __WXMSW__
-#endif // wxUSE_GRAPHICS_CONTEXT
+#endif  // __WXMSW__
+#endif  // wxUSE_GRAPHICS_CONTEXT
 
     // Horizontal sizer on top, contains drawing Panel and side panel
     bSizerVertical->Add(bSizerHorizontal, 1, wxEXPAND | wxALL, 5);
@@ -102,12 +108,10 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
     Maximize();
     Show();
 }
-MainWindowFrame::~MainWindowFrame()
-{
+MainWindowFrame::~MainWindowFrame() {
     delete m_controller;
 }
-void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
-{
+void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event)) {
     static bool destroyed = false;
     if (destroyed)
         return;
@@ -116,23 +120,24 @@ void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 
     destroyed = true;
 }
-void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event))
-{
+void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event)) {
     Close(true);
 }
-void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
-{
+void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
     wxMessageBox(wxBuildInfo(), wxT("Information"));
 }
-void MainWindowFrame::InitMenu()
-{
+void MainWindowFrame::InitMenu() {
     wxMenu* fileMenu = new wxMenu();
     wxMenu* editMenu = new wxMenu();
     wxMenu* helpMenu = new wxMenu();
     wxMenuBar* mainMenuBar = new wxMenuBar();
-
-    fileMenu->Append(wxID_EXIT, wxT("&Quitter\tAlt-Q"), wxT("Quitter l'application Reseau Interurbain"));
-    helpMenu->Append(wxID_ABOUT, wxT("&Version"), wxT("En savoir plus sur la version de l'application Reseau Interurbain"));
+    wxString version;
+    version << "En savoir plus sur la version"
+        << " de l'application Reseau Interurbain";
+    fileMenu->Append(wxID_EXIT, wxT("&Quitter    Alt-Q"),
+        wxT("Quitter l'application Reseau Interurbain"));
+    helpMenu->Append(wxID_ABOUT, wxT("&Version"),
+        version);
 
     mainMenuBar->Append(fileMenu, wxT("&Fichier"));
     mainMenuBar->Append(editMenu, wxT("&Edit"));
@@ -140,6 +145,6 @@ void MainWindowFrame::InitMenu()
 
     SetMenuBar(mainMenuBar);
 }
-} // namespace gui
-} // namespace reseau_interurbain
+}  // namespace gui
+}  // namespace reseau_interurbain
 
