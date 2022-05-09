@@ -27,10 +27,12 @@ if (WIN32)
 ENDIF()
 
 configure_file("Version.h.in" "Version.h")
-
 include_directories("${PROJECT_BINARY_DIR}/src")
 target_include_directories(domain PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 target_include_directories(gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+if(NOT BUILD_TESTING)
 target_link_libraries(domain PUBLIC ${wxWidgets_LIBRARIES})
+endif()
 target_link_libraries(gui PRIVATE domain)
 target_link_libraries(${PROJECT_NAME} PRIVATE gui)

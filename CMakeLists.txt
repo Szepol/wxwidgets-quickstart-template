@@ -7,6 +7,8 @@ cmake_minimum_required (VERSION 3.20)
 
 project (ReseauInterurbain VERSION 1.0)
 
+add_subdirectory(src)
+
 if(BUILD_TESTING)
 	include (FetchContent)
 
@@ -32,8 +34,7 @@ else()
 	set(wxWidgets_EXCLUDE_COMMON_LIBRARIES FALSE)
 	find_package(wxWidgets 3.1 REQUIRED)
 	include(${wxWidgets_USE_FILE})
-
-	add_subdirectory(src)
 endif()
+
 
 
