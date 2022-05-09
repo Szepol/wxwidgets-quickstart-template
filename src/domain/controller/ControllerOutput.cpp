@@ -30,12 +30,6 @@ namespace reseau_interurbain
 {
 namespace domain
 {
-/**
- * \brief .
- * 
- * \param parent
- * \param p_model
- */
 ControllerOutput::ControllerOutput(wxPanel* parent, Model* p_model) : m_parent(parent), m_model(p_model)
 {
 #if wxUSE_DC_TRANSFORM_MATRIX
@@ -88,11 +82,6 @@ void ControllerOutput::DrawComponent(wxDC& pdc)
 
 	DrawGrid(dc);
 }
-/**
- * \brief .
- * 
- * \param dc
- */
 void ControllerOutput::DrawGrid(wxDC& dc)
 {
 #if wxUSE_GRAPHICS_CONTEXT

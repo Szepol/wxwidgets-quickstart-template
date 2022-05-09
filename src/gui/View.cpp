@@ -30,41 +30,25 @@ EVT_MOTION(View::UpdateMouse)
 EVT_PAINT(View::OnPaint)
 EVT_ERASE_BACKGROUND(View::OnEraseBackground)
 wxEND_EVENT_TABLE()
-/**
- * \brief View constructor, initializes the panel.
- * 
- * \param wxFrame* p_parent pointer to the parent
- * \param domain::Model p_model pointer to the model object
- */
+
 View::View(wxFrame* p_parent, domain::Model* p_model) :
 	wxPanel(p_parent), m_controller(new domain::ControllerOutput(this, p_model)), m_point(wxPoint(0,0))
 {
 	SetDoubleBuffered(true);
 }
-/**
- * \brief View destructor.
- * 
- */
+
 View::~View()
 {
 	delete m_controller;
 }
-/**
- * \brief Handle the mousewheel event and scales the affinematrix of the model accordingly
- * 
- * \param wxMouseEvent& event used to get the mouse position and wheel rotation axis
- */
+
 void View::OnZoom(wxMouseEvent& event)
 {
 	((MainWindowFrame*)GetParent())->m_controller->Zoom(event.GetWheelRotation(), ScreenToClient(wxGetMousePosition()).x, ScreenToClient(wxGetMousePosition()).y);
 	Update();
 	Refresh();
 }
-/**
- * \brief Handles the mouse motion event
- * 
- * \param wxMouseEvent& event used to assess what state the mouse is in and calculate the delta of the motion if needed.
- */
+
 void View::UpdateMouse(wxMouseEvent& event)
 {
 	if (event.Dragging() && event.RightIsDown())
@@ -76,21 +60,13 @@ void View::UpdateMouse(wxMouseEvent& event)
 		Refresh();
 	}
 }
-/**
- * \brief Saves the position of the mouse on right click, used to calculate the delta during motion
- * 
- * \param wxMouseEvent& WXUNUSED event; no method used.
- */
+
 void View::OnRightMouse(wxMouseEvent& WXUNUSED(event))
 {
 	m_point.x = ScreenToClient(wxGetMousePosition()).x;
 	m_point.y = ScreenToClient(wxGetMousePosition()).y;
 }
-/**
- * \brief Pains the paint drawing context or buffered paint drawing context.
- * 
- * \param wxPaintEvent& WXUNUSED event; no method used.
- */
+
 void View::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 	if (m_controller->IsUsingBuffer())
@@ -104,11 +80,7 @@ void View::OnPaint(wxPaintEvent& WXUNUSED(event))
 		m_controller->DrawComponent(pdc);
 	}
 }
-/**
- * \brief Removes the erase background because it just draws over, less demanding according to the wiki.
- * 
- * \param  wxEraseEvent& WXUNUSED event; no method used.
- */
+
 void View::OnEraseBackground(wxEraseEvent& WXUNUSED(event))
 {
 

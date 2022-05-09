@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file    Graph.h
- * \brief   
+ * \brief   Datastructure to represent weighted graphs
  * 
  * \author  Szepol
  * \date    January 2022
@@ -21,19 +21,6 @@ namespace reseau_interurbain
 {
 namespace domain
 {
-
-/**
- * \class Graphe
- * \brief Classe representing a oriented graph<br>
- * When constructing a graph object we also need to construct atleast one node object. <br>
- * Once the graph is constructed it's possible tp add nodes and connect these nodes with oriented <br>
- * arcs. Each arc has a ponderation.<br><br>
- * 
- * TODO: <br>
- * Add a method to remove Node from the graph.<br>
- * Change the class so that the graph stays valid at all time (shouldn't be able to remove an arc and leave a unconnected node)<br>
- *
- */
 class Graph
 {
 public:

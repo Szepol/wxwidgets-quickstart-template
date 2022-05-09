@@ -24,11 +24,7 @@ class Model;
 namespace gui
 {
 class MainWindowFrame;
-/**
- * \class View
- * \brief Class of the drawing panel wheres the domain's objects are visually represented
- * contains functionalities of inputs like zoom and translation of the view.
- */
+
 class View : public wxPanel
 {
 public:

@@ -23,12 +23,7 @@ class ControllerInput;
 namespace gui
 {
 class View;
-/**
- * \class MainWindowFrame
- * \brief Class of the interface where most of the input of the informations 
- * from the user to the domain is done. Is composed of the menu bar, the view and the side panel.
- * 
- */
+
 class MainWindowFrame : public wxFrame
 {
 	friend class View;

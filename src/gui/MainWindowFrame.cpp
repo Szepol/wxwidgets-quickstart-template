@@ -52,13 +52,7 @@ wxBEGIN_EVENT_TABLE(MainWindowFrame, wxFrame)
     EVT_MENU(wxID_ABOUT, MainWindowFrame::OnAbout)
 wxEND_EVENT_TABLE()
 
-/**
- * \brief MainWindowFrame constructor, initialize the main window frame by creating the menu bar.
- * view panel and side panel.
- * 
- * \param wxWindow* p_parent pointer to parent window
- * \param wxWindowID p_id window id of the frame
- */
+
 MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id) 
     : wxFrame(p_parent, p_id, wxTheApp->GetAppName())
 {
@@ -108,19 +102,10 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
     Maximize();
     Show();
 }
-/**
- * \brief MainWindowFrame destructor
- * 
- */
 MainWindowFrame::~MainWindowFrame()
 {
     delete m_controller;
 }
-/**
- * \brief OnCloseWindow handles the X button event to close the window.
- * 
- * \param wxCloseEvent& WXUNUSED 
- */
 void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 {
     static bool destroyed = false;
@@ -131,28 +116,14 @@ void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 
     destroyed = true;
 }
-/**
- * \brief OnExit handles the exit event in the menu bar.
- * 
- * \param wxCommandEvent& WXUNUSED
- */
 void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
     Close(true);
 }
-/**
- * \brief OnAbout handles the about event in the menu bar.
- * 
- * \param wxCommandEvent& WXUNUSED
- */
 void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(wxBuildInfo(), wxT("Information"));
 }
-/**
- * \brief InitMenu initialize the menu bar
- *
- */
 void MainWindowFrame::InitMenu()
 {
     wxMenu* fileMenu = new wxMenu();

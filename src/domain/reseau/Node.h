@@ -17,28 +17,13 @@ namespace reseau_interurbain
 {
 namespace domain
 {
-/**
-* \struct Ponderations
-* \brief Struct used to store the ponderations used by the arcs
-*/
 struct Ponderations
 {
-	float duration;		// Duration of the trip in hours
-	float cost;			// Cost of the trip in dollars
+	float duration;
+	float cost;
 
-	/**
-	 * @brief Constructor of the ponderations structure used to give a ponderation to an oriented arc
-	 * connecting 2 nodes
-	 * @param d Duration of trip in hours
-	 * @param c Cost of the trip in dollars
-	 */
 	Ponderations(float d, float c) : duration(d), cost(c) {}
 };
-/**
- * \class Node
- * \brief Interurban network node stores all the arcs coming out from the node, the position of the node
- * and the name of the node. 
- */
 class Node
 {
 public:
