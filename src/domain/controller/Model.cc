@@ -18,35 +18,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
-#define RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
 
-#include <domain/reseau/Graph.h>
-#include <string>
-#include <vector>
+#include <domain/controller/Model.h>
 
 namespace reseau_interurbain {
 namespace domain {
-struct Chemin {
-    std::vector<std::string> listeVilles;
-    float dureeTotale;
-    float coutTotal;
-    bool reussi;
-};
-class ReseauInterurbain {
- public:
-    ReseauInterurbain(std::string p_nodeName, int p_x,
-        int p_y, std::string p_networkName);
-    ~ReseauInterurbain();
-    Chemin rechercheCheminDijkstra(const std::string& origine,
-        const std::string& destination, bool dureeCout) const;
-    std::vector<std::vector<std::string>> algorithmeKosaraju();
-
- private:
-    Graph m_network;
-    std::string m_networkName;
-};
+Model::Model() : m_useZoomOut(false) {
+#if wxUSE_DC_TRANSFORM_MATRIX
+    m_mtx = nullptr;
+#endif
+}
+#if wxUSE_DC_TRANSFORM_MATRIX
+Model::Model(wxAffineMatrix2D* p_mtx) : m_mtx(p_mtx), m_useZoomOut(true) {
+}
+#endif
+Model::~Model() {
+#if wxUSE_DC_TRANSFORM_MATRIX
+    delete m_mtx;
+#endif
+}
+void Model::EnableZoomOut(bool p_use) {
+#if wxUSE_DC_TRANSFORM_MATRIX
+    if (m_mtx != nullptr)
+        m_useZoomOut = p_use;
+#endif
+}
+bool Model::IsZoomOutEnabled() {
+    return m_useZoomOut;
+}
 }  // namespace domain
 }  // namespace reseau_interurbain
 
-#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_

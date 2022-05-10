@@ -18,35 +18,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
-#define RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
+#include <App.h>
 
-#include <domain/reseau/Graph.h>
-#include <string>
-#include <vector>
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
+
+#include <gui/MainWindowFrame.h>
 
 namespace reseau_interurbain {
-namespace domain {
-struct Chemin {
-    std::vector<std::string> listeVilles;
-    float dureeTotale;
-    float coutTotal;
-    bool reussi;
-};
-class ReseauInterurbain {
- public:
-    ReseauInterurbain(std::string p_nodeName, int p_x,
-        int p_y, std::string p_networkName);
-    ~ReseauInterurbain();
-    Chemin rechercheCheminDijkstra(const std::string& origine,
-        const std::string& destination, bool dureeCout) const;
-    std::vector<std::vector<std::string>> algorithmeKosaraju();
+wxIMPLEMENT_APP(App);
+bool App::OnInit() {
+    if (!wxApp::OnInit())
+        return false;
 
- private:
-    Graph m_network;
-    std::string m_networkName;
-};
-}  // namespace domain
+    wxTheApp->SetAppName(APPLICATION_NAME);
+    wxTheApp->SetAppDisplayName(APPLICATION_NAME);
+    wxTheApp->SetVendorName(APPLICATION_NAME);
+
+    ::wxInitAllImageHandlers();
+
+    gui::MainWindowFrame* Frame = new gui::MainWindowFrame(NULL);
+    Frame->SetMinSize(wxSize(MINIMUM_SIZE_WIDTH, MINIMUM_SIZE_HEIGHT));
+    SetTopWindow(Frame);
+
+    return true;
+}
 }  // namespace reseau_interurbain
 
-#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
