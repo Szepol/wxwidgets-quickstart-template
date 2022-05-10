@@ -449,4 +449,3 @@ VSInheritEnvironnements.txt
 build.ninja
 .ninja_log
 .ninja_deps
-cpplint.py

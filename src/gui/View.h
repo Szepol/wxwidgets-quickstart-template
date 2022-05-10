@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_GUI_VIEW_H_
+#define RESEAUINTERURBAIN_SRC_GUI_VIEW_H_
 
 #include "MainWindowFrame.h"
 #include <wx/panel.h>
@@ -55,3 +56,4 @@ class View : public wxPanel {
 }  // namespace gui
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_GUI_VIEW_H_

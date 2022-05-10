@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_NODE_H_
+#define RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_NODE_H_
 
 #include <string>
 #include <vector>
@@ -60,3 +61,4 @@ class Node {
 }  // namespace domain
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_NODE_H_

@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_MODEL_H_
+#define RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_MODEL_H_
 
 #include <wx/affinematrix2d.h>
 
@@ -46,3 +47,4 @@ class Model {
 }  // namespace domain
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_MODEL_H_

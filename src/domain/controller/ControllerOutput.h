@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_
+#define RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_
 
 #include <wx/graphics.h>
 #include <wx/panel.h>
@@ -56,3 +57,4 @@ class ControllerOutput {
 }  // namespace domain
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_

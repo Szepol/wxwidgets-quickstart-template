@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_APP_H_
+#define RESEAUINTERURBAIN_SRC_APP_H_
 
 #include <wx/app.h>
 #include <Version.h>
@@ -35,3 +36,4 @@ class App : public wxApp {
 };
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_APP_H_

@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
+#define RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
 
 #include <domain/reseau/Graph.h>
 #include <string>
@@ -47,3 +48,5 @@ class ReseauInterurbain {
 };
 }  // namespace domain
 }  // namespace reseau_interurbain
+
+#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_

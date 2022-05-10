@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef RESEAUINTERURBAIN_SRC_GUI_MAINWINDOWFRAME_H_
+#define RESEAUINTERURBAIN_SRC_GUI_MAINWINDOWFRAME_H_
 
 #include <gui/View.h>
 #include <wx/frame.h>
@@ -52,3 +53,4 @@ class MainWindowFrame : public wxFrame {
 }  // namespace gui
 }  // namespace reseau_interurbain
 
+#endif  // RESEAUINTERURBAIN_SRC_GUI_MAINWINDOWFRAME_H_
