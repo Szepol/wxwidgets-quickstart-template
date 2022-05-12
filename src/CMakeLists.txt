@@ -23,7 +23,9 @@ add_library(
 	)
 
 if (WIN32)
-	add_executable(${PROJECT_NAME} WIN32 App.h App.cc)
+    add_executable(${PROJECT_NAME} WIN32 App.cc)
+else()
+    add_executable(${PROJECT_NAME} WIN32 App.cc)
 ENDIF()
 
 configure_file("Version.h.in" "Version.h")

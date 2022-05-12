@@ -35,26 +35,32 @@ if(USE_CPM)
         target_include_directories(wxWidgets INTERFACE "${wxWidgets_SOURCE_DIR}")
     endif()
 else()
-    find_package(wxWidgets 3.1 REQUIRED)
+    find_package(wxWidgets REQUIRED)
     include(${wxWidgets_USE_FILE})
 endif()
 
 add_subdirectory(src)
 
 if(BUILD_TESTING)
-	include (FetchContent)
+    find_package(GTest)
+    if (GTest_FOUND)
+        include_directories(${GTEST_INCLUDE_DIRS})
+    else()
+	    include (FetchContent)
 
-	FetchContent_Declare(
-		googletest
-		GIT_REPOSITORY https://github.com/google/googletest.git
-		GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
-	)
+	    FetchContent_Declare(
+		    googletest
+		    GIT_REPOSITORY https://github.com/google/googletest.git
+		    GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
+	    )
 
-	if (WIN32)
-		set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-	endif()
+	    if (WIN32)
+		    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+	    endif()
 
-	FetchContent_MakeAvailable(googletest)
+	    FetchContent_MakeAvailable(googletest)
+        include(GoogleTest)
+    endif()
 	enable_testing ()
 
 	add_subdirectory(test)

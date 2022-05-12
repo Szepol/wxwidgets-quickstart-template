@@ -1,0 +1,25 @@
+name: build-ci
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: szepol/wxwidgets:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: CMake
+        run: cmake . -DCMAKE_CXX_COMPILER=g++ -DBUILD_TESTING=true
+
+      - name: build
+        run: make
+
+      - name: test
+        run: |
+          ./test/NodeTest
