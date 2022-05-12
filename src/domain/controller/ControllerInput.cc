@@ -36,6 +36,7 @@ ControllerInput::~ControllerInput() {
 void ControllerInput::Zoom(const int p_direction, int p_x, int p_y) {
     if (p_direction > 0 && !m_model->IsZoomOutEnabled())
         return;
+#if wxUSE_DC_TRANSFORM_MATRIX
     wxAffineMatrix2D* mtx = m_model->GetAffineMatrix();
     wxPoint2DDouble point = wxPoint2DDouble(wxDouble(p_x), wxDouble(p_y));
     mtx->Invert();
@@ -53,15 +54,18 @@ void ControllerInput::Zoom(const int p_direction, int p_x, int p_y) {
         mtx->Translate(point.m_x, point.m_y);
         mtx->Scale(1.09, 1.09);
         mtx->Translate(-point.m_x, -point.m_y);
+#endif  // wxUSE_DC_TRANSFORM_MATRIX
     }
 }
 void ControllerInput::Move(int p_dx, int p_dy) {
+#if wxUSE_DC_TRANSFORM_MATRIX
     wxAffineMatrix2D* mtx = m_model->GetAffineMatrix();
     wxMatrix2D* temp_mtx = new wxMatrix2D();
     mtx->Invert();
     mtx->Get(temp_mtx, nullptr);
     mtx->Invert();
     mtx->Translate(-p_dx * temp_mtx->m_11, -p_dy * temp_mtx->m_22);
+#endif  // wxUSE_DC_TRANSFORM_MATRIX
 }
 }  // namespace domain
 }  // namespace reseau_interurbain

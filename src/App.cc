@@ -18,16 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <App.h>
-
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
 
 #include <gui/MainWindowFrame.h>
+#include <Version.h>
 
-namespace reseau_interurbain {
+#define APPLICATION_NAME L"Reseau Interurbain"
+#define MINIMUM_SIZE_HEIGHT 720
+#define MINIMUM_SIZE_WIDTH 1280
+
+class App : public wxApp {
+ public:
+#if wxCHECK_VERSION(3, 1, 0)
+    virtual bool OnInit() wxOVERRIDE;
+    virtual int OnExit() wxOVERRIDE { return 0; }
+#else
+    bool OnInit() override;
+    int OnExit() override { return 0; }
+#endif  // wxCHECK_VERSION
+};
+
 wxIMPLEMENT_APP(App);
 bool App::OnInit() {
     if (!wxApp::OnInit())
@@ -39,11 +52,10 @@ bool App::OnInit() {
 
     ::wxInitAllImageHandlers();
 
-    gui::MainWindowFrame* Frame = new gui::MainWindowFrame(NULL);
+    reseau_interurbain::gui::MainWindowFrame* Frame =
+        new reseau_interurbain::gui::MainWindowFrame(NULL);
     Frame->SetMinSize(wxSize(MINIMUM_SIZE_WIDTH, MINIMUM_SIZE_HEIGHT));
     SetTopWindow(Frame);
 
     return true;
 }
-}  // namespace reseau_interurbain
-

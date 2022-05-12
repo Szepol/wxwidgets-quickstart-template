@@ -35,7 +35,7 @@ if(USE_CPM)
         target_include_directories(wxWidgets INTERFACE "${wxWidgets_SOURCE_DIR}")
     endif()
 else()
-    find_package(wxWidgets 3.1 REQUIRED)
+    find_package(wxWidgets REQUIRED)
     include(${wxWidgets_USE_FILE})
 endif()
 

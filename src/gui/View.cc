@@ -76,10 +76,10 @@ void View::OnRightMouse(wxMouseEvent& WXUNUSED(event)) {
 void View::OnPaint(wxPaintEvent& WXUNUSED(event)) {
     if (m_controller->IsUsingBuffer()) {
         wxBufferedPaintDC bpdc(this);
-        m_controller->DrawComponent(bpdc.GetImpl()->GetOwner());
+        m_controller->DrawComponent(bpdc);
     } else {
         wxPaintDC pdc(this);
-        m_controller->DrawComponent(pdc.GetImpl()->GetOwner());
+        m_controller->DrawComponent(pdc);
     }
 }
 void View::OnEraseBackground(wxEraseEvent& WXUNUSED(event)) {

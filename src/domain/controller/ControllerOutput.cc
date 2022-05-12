@@ -34,6 +34,8 @@
 #include <wx/dcps.h>
 #endif
 
+#include <cmath>
+
 
 namespace reseau_interurbain {
 namespace domain {
@@ -49,7 +51,7 @@ ControllerOutput::ControllerOutput(wxPanel* parent, Model* p_model)
     m_useBuffer = true;
 }
 // TODO(Szepol): Render all the items in the controller
-void ControllerOutput::DrawComponent(wxDC* pdc) {
+void ControllerOutput::DrawComponent(wxDC& pdc) {
     if (m_parent == NULL)
         return;
 
@@ -58,9 +60,9 @@ void ControllerOutput::DrawComponent(wxDC* pdc) {
 
     if (m_renderer) {
         wxGraphicsContext* context;
-        if (auto paintdc = wxDynamicCast(pdc, wxPaintDC)) {
+        if (auto paintdc = wxDynamicCast(&pdc, wxPaintDC)) {
             context = m_renderer->CreateContext(*paintdc);
-        } else if (auto memdc = wxDynamicCast(pdc, wxMemoryDC)) {
+        } else if (auto memdc = wxDynamicCast(&pdc, wxMemoryDC)) {
             context = m_renderer->CreateContext(*memdc);
 #if wxUSE_METAFILE && defined(wxMETAFILE_IS_ENH)
         } else if (auto metadc = wxDynamicCast(&pdc, wxEnhMetaFileDC)) {
@@ -78,18 +80,20 @@ void ControllerOutput::DrawComponent(wxDC* pdc) {
         gdc.SetGraphicsContext(context);
     }
 
-    wxDC* dc = m_renderer ? gdc.GetImpl()->GetOwner() : pdc;
+    wxDC& dc = m_renderer ? static_cast<wxDC&>(gdc) : pdc;
 #else
     wxDC& dc = pdc;
 #endif
+#if wxUSE_DC_TRANSFORM_MATRIX
     if (m_useAffineMatrix)
-        dc->SetTransformMatrix(*(m_model->GetAffineMatrix()));
+        dc.SetTransformMatrix(*(m_model->GetAffineMatrix()));
+#endif  // wxUSE_DC_TRANSFORM_MATRIX
     DrawGrid(dc);
 }
-void ControllerOutput::DrawGrid(wxDC* dc) {
+void ControllerOutput::DrawGrid(wxDC& dc) {
 #if wxUSE_GRAPHICS_CONTEXT
     if (m_renderer) {
-        wxGCDC& gdc = (wxGCDC&)*dc;
+        wxGCDC& gdc = (wxGCDC&)dc;
         wxGraphicsContext* gc = gdc.GetGraphicsContext();
         wxGraphicsPath pth;
     }
@@ -97,8 +101,9 @@ void ControllerOutput::DrawGrid(wxDC* dc) {
     wxPoint2DDouble origin = wxPoint(0, 0);
     int width;
     int height;
-    dc->GetSize(&width, &height);
+    dc.GetSize(&width, &height);
     wxPoint2DDouble limit = wxPoint(width, height);
+#if wxUSE_DC_TRANSFORM_MATRIX
     if (m_useAffineMatrix) {
         wxAffineMatrix2D* mtx = m_model->GetAffineMatrix();
         wxMatrix2D* ref_mtx = new wxMatrix2D();
@@ -120,16 +125,17 @@ void ControllerOutput::DrawGrid(wxDC* dc) {
         // Reverse affine matrix
         mtx->Invert();
     }
+#endif  // wxUSE_DC_TRANSFORM_MATRIX
     // Draw the grid
     origin.m_x = floor(origin.m_x / 50) * 50;
     origin.m_y = floor(origin.m_y / 50) * 50;
     for (int x = origin.m_x; x <= floor(limit.m_x); x += 50) {
         for (int y = origin.m_y; y <= floor(limit.m_y); y += 50) {
-            wxBrush brush = dc->GetBrush();
+            wxBrush brush = dc.GetBrush();
             brush.SetColour(wxColor(211, 211, 211));
-            dc->SetPen(*wxGREY_PEN);
-            dc->SetBrush(brush);
-            dc->DrawRectangle(x, y, 50, 50);
+            dc.SetPen(*wxGREY_PEN);
+            dc.SetBrush(brush);
+            dc.DrawRectangle(x, y, 50, 50);
         }
     }
 }

@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 #include <domain/reseau/Node.h>
+#include <algorithm>
 
 namespace reseau_interurbain {
 namespace domain {

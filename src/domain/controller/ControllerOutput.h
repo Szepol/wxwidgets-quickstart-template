@@ -41,10 +41,10 @@ class ControllerOutput {
     void EnableBuffer(bool use = true) {
         m_useBuffer = use; m_parent->Refresh();
     }
-    void DrawComponent(wxDC* dc);
+    void DrawComponent(wxDC& dc); // NOLINT
 
  protected:
-    void DrawGrid(wxDC* dc);
+    void DrawGrid(wxDC& dc); // NOLINT
 
  private:
     Model* m_model;
