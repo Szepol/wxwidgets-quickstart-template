@@ -42,8 +42,6 @@ void ControllerInput::Zoom(const int p_direction, int p_x, int p_y) {
     mtx->Invert();
     point = mtx->TransformPoint(point);
     mtx->Invert();
-    OutputDebugStringA(("x :" + std::to_string(point.m_x) + "\n").c_str());
-    OutputDebugStringA(("y :" + std::to_string(point.m_y) + "\n").c_str());
     if (p_direction > 0) {
         mtx->Translate(point.m_x, point.m_y);
         mtx->Scale(0.91, 0.91);
