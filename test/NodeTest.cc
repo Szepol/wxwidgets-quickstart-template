@@ -136,6 +136,7 @@ TEST_F(NodeTestFixture, GetX) {
 TEST_F(NodeTestFixture, GetY) {
     ASSERT_EQ(f_testFirstNode.GetY(), firstNodeY);
     ASSERT_EQ(f_testSecondNode.GetY(), secondNodeY);
+    ASSERT_TRUE(false);
 }
 }  // namespace test
 }  // namespace domain
