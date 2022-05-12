@@ -7,8 +7,10 @@ on:
       - main
 env:
 jobs:
-  build:
-    container: szepol/wxwidgets:latest
+  build-and-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: szepol/wxwidgets:latest
 
     steps:
       - uses: actions/checkout@v2
