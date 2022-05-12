@@ -59,7 +59,6 @@ if(BUILD_TESTING)
 	    endif()
 
 	    FetchContent_MakeAvailable(googletest)
-        set(GTEST_BOTH_LIBARIES gtest_main)
         include(GoogleTest)
     endif()
 	enable_testing ()
