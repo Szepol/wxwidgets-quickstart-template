@@ -432,6 +432,8 @@ FodyWeavers.xsd
 
 # CMakeFiles
 CMakeSettings.json
+*/build/*
+*/out/*
 build/*
 out/*
 CMakeLists.txt.user
