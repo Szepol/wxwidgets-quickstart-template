@@ -26,7 +26,7 @@
 #include <gui/MainWindowFrame.h>
 #include <domain/controller/ControllerInput.h>
 #include <domain/controller/Model.h>
-#include <App.h>
+#include <Version.h>
 
 #include <wx/graphics.h>
 #include <wx/event.h>
@@ -38,7 +38,7 @@ inline wxString wxBuildInfo() {
     wxString version;
     version << "v" << ReseauInterurbain_VERSION_MAJOR << "."
         << ReseauInterurbain_VERSION_MINOR;
-    build << APPLICATION_NAME << " " << version;
+    // build << APPLICATION_NAME << " " << version;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
 #elif defined(__UNIX__)

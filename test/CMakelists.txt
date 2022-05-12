@@ -6,9 +6,8 @@ add_executable(
 )
 target_link_libraries(
 	NodeTest
-	gtest_main
+	${GTEST_BOTH_LIBARIES}
 	domain
 )
 
-include(GoogleTest)
 gtest_discover_tests(NodeTest)
