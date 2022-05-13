@@ -60,7 +60,6 @@ wxEND_EVENT_TABLE()
 
 MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
       : wxFrame(p_parent, p_id, wxTheApp->GetAppName()) {
-
     // Initialize menu bar
     InitMenu();
     SetBackgroundColour(wxColor(120, 150, 200));
