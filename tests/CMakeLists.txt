@@ -1,15 +1,15 @@
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 add_executable(
-    NodeTest
-    NodeTest.cc
+    SampleTest
+    SampleTest.cc
 )
 
 target_link_libraries(
-    NodeTest
+    SampleTest
     gtest
     gtest_main
-    domain
+    ui
 )
 
-add_test(ReseauTests NodeTest)
+add_test(SampleTests SampleTest)

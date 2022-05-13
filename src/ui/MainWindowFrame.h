@@ -18,43 +18,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_
-#define RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_
+#ifndef WXWIDGETS_QUICKSTART_TEMPLATE_SRC_UI_MAINWINDOWFRAME_H_
+#define WXWIDGETS_QUICKSTART_TEMPLATE_SRC_UI_MAINWINDOWFRAME_H_
 
-#include <wx/graphics.h>
+#include <wx/frame.h>
 #include <wx/panel.h>
-#include <domain/controller/Model.h>
+#include <Version.h>
 
-namespace reseau_interurbain {
-namespace domain {
-class ControllerOutput {
+namespace wxwidgets_quickstart_template {
+namespace ui {
+class MainWindowFrame : public wxFrame {
+    friend class View;
  public:
-    ControllerOutput(wxPanel* parent, Model* p_model);
-    ~ControllerOutput() {}
-#if wxUSE_GRAPHICS_CONTEXT
-    void UseGraphicRenderer(wxGraphicsRenderer* renderer);
-#endif  // wxUSE_GRAPHICS_CONTEXT
-    bool IsUsingBuffer() { return m_useBuffer; }
-    void EnableAntiAliasing(bool use = true) {
-        m_useAntiAliasing = use; m_parent->Refresh();
-    }
-    void EnableBuffer(bool use = true) {
-        m_useBuffer = use; m_parent->Refresh();
-    }
-    void DrawComponent(wxDC& dc); // NOLINT
+    explicit MainWindowFrame(wxWindow* p_parent, wxWindowID p_id = wxID_ANY);
+    ~MainWindowFrame() {}
 
  protected:
-    void DrawGrid(wxDC& dc); // NOLINT
+    void OnCloseWindow(wxCloseEvent &event);  // NOLINT
+    void OnExit(wxCommandEvent &event);  // NOLINT
+    void OnAbout(wxCommandEvent &event);  // NOLINT
 
  private:
-    Model* m_model;
-    bool m_useBuffer;
-    bool m_useAntiAliasing;
-    bool m_useAffineMatrix;
-    wxPanel* m_parent;
-    wxGraphicsRenderer* m_renderer;
-};
-}  // namespace domain
-}  // namespace reseau_interurbain
+    void InitMenu();
 
-#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_CONTROLLER_CONTROLLEROUTPUT_H_
+    wxDECLARE_EVENT_TABLE();
+};
+}  // namespace ui
+}  // namespace wxwidgets_quickstart_template
+
+#endif  // WXWIDGETS_QUICKSTART_TEMPLATE_SRC_UI_MAINWINDOWFRAME_H_

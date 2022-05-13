@@ -18,35 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
-#define RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
+#include <gtest/gtest.h>
+#include <ui/MainWindowFrame.h>
 
-#include <domain/reseau/Graph.h>
-#include <string>
-#include <vector>
-
-namespace reseau_interurbain {
-namespace domain {
-struct Chemin {
-    std::vector<std::string> listeVilles;
-    float dureeTotale;
-    float coutTotal;
-    bool reussi;
-};
-class ReseauInterurbain {
- public:
-    ReseauInterurbain(std::string p_nodeName, int p_x,
-        int p_y, std::string p_networkName);
-    ~ReseauInterurbain();
-    Chemin rechercheCheminDijkstra(const std::string& origine,
-        const std::string& destination, bool dureeCout) const;
-    std::vector<std::vector<std::string>> algorithmeKosaraju();
-
- private:
-    Graph m_network;
-    std::string m_networkName;
-};
-}  // namespace domain
-}  // namespace reseau_interurbain
-
-#endif  // RESEAUINTERURBAIN_SRC_DOMAIN_RESEAU_RESEAUINTERURBAIN_H_
+namespace wxwidgets_quickstart_template {
+namespace sampletests {
+namespace sampletest {
+TEST(SampleTest, MyTest) {
+    EXPECT_STREQ(APPLICATION_NAME, L"wxwidgets-quickstart-template");
+}
+}  // namespace sampletest
+}  // namespace sampletests
+}  // namespace wxwidgets_quickstart_template

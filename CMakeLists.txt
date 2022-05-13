@@ -1,70 +1,55 @@
 ﻿cmake_minimum_required (VERSION 3.14...3.22)
 
 project(
-    ReseauInterurbain
+    wxwidgets-quickstart-template
     VERSION 1.0
     LANGUAGES CXX
 )
 
-option(USE_CPM "Fetch packages using C++ Package Manager" FALSE)
+find_package(wxWidgets REQUIRED)
 
-# TODO
-if(USE_CPM)
-    set(CPM_DOWNLOAD_VERSION v0.35.0)
-
-    set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
-
-    if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
-        message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
-        file(DOWNLOAD
-            https://github.com/cpm-cmake/CPM.cmake/releases/download/${CPM_DOWNLOAD_VERSION}/CPM.cmake
-            ${CPM_DOWNLOAD_LOCATION}
-        )
+# Temporary fix for weird MSVC interaction
+if (MSVC)
+  if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    if (NOT ${wxWidgets_CONFIGURATION} MATCHES .*d$ )
+      set(wxWidgets_CONFIGURATION ${wxWidgets_CONFIGURATION}d)
     endif()
-
-    include(${CPM_DOWNLOAD_LOCATION})
-    message(STATUS ${CPM_DOWNLOAD_LOCATION})
-
-    CPMAddPackage(
-        NAME wxWidgets
-        GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets
-        GIT_TAG v3.1.6
-    )
-    if (wxWidgets_ADDED)
-        add_library(wxWidgets INTERFACE)
-        target_include_directories(wxWidgets INTERFACE "${wxWidgets_SOURCE_DIR}")
+  else()
+    if (${wxWidgets_CONFIGURATION} MATCHES .*d$ )
+      string(LENGTH ${wxWidgets_CONFIGURATION} BUILD_STR_SIZE)
+      MATH(EXPR BUILD_STR_SIZE "${BUILD_STR_SIZE}-1")
+      string(SUBSTRING ${wxWidgets_CONFIGURATION} 0 ${BUILD_STR_SIZE} wxWidgets_CONFIGURATION)
     endif()
-else()
-    find_package(wxWidgets REQUIRED)
-    include(${wxWidgets_USE_FILE})
+  endif()
+
+  find_package(wxWidgets REQUIRED)
 endif()
+
+include(${wxWidgets_USE_FILE})
 
 add_subdirectory(src)
 
 if(BUILD_TESTING)
-    find_package(GTest)
-    if (GTest_FOUND)
-        include_directories(${GTEST_INCLUDE_DIRS})
-    else()
-	    include (FetchContent)
+  find_package(GTest)
+  if (GTest_FOUND)
+    include_directories(${GTEST_INCLUDE_DIRS})
+  else()
+    include (FetchContent)
 
-	    FetchContent_Declare(
-		    googletest
-		    GIT_REPOSITORY https://github.com/google/googletest.git
-		    GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
-	    )
+	FetchContent_Declare(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest.git
+		GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
+	)
 
-	    if (WIN32)
-		    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-	    endif()
+	if (WIN32)
+      set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+	endif()
 
-	    FetchContent_MakeAvailable(googletest)
-        include(GoogleTest)
-    endif()
-	enable_testing ()
+	FetchContent_MakeAvailable(googletest)
+    include(GoogleTest)
+  endif()
+  enable_testing ()
 
-	add_subdirectory(test)
+  add_subdirectory(tests)
 endif()
-
-
-
