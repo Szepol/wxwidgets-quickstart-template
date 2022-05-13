@@ -23,10 +23,8 @@
 #include <wx/wx.h>
 #endif
 
-#include <gui/MainWindowFrame.h>
-#include <Version.h>
+#include <ui/MainWindowFrame.h>
 
-#define APPLICATION_NAME L"Reseau Interurbain"
 #define MINIMUM_SIZE_HEIGHT 720
 #define MINIMUM_SIZE_WIDTH 1280
 
@@ -42,6 +40,7 @@ class App : public wxApp {
 };
 
 wxIMPLEMENT_APP(App);
+
 bool App::OnInit() {
     if (!wxApp::OnInit())
         return false;
@@ -52,8 +51,8 @@ bool App::OnInit() {
 
     ::wxInitAllImageHandlers();
 
-    reseau_interurbain::gui::MainWindowFrame* Frame =
-        new reseau_interurbain::gui::MainWindowFrame(NULL);
+    wxwidgets_quickstart_template::ui::MainWindowFrame* Frame =
+        new wxwidgets_quickstart_template::ui::MainWindowFrame(NULL);
     Frame->SetMinSize(wxSize(MINIMUM_SIZE_WIDTH, MINIMUM_SIZE_HEIGHT));
     SetTopWindow(Frame);
 

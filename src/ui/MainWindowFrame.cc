@@ -23,22 +23,19 @@
 #include <wx/wx.h>
 #endif
 
-#include <gui/MainWindowFrame.h>
-#include <domain/controller/ControllerInput.h>
-#include <domain/controller/Model.h>
-#include <Version.h>
+#include <ui/MainWindowFrame.h>
 
 #include <wx/graphics.h>
 #include <wx/event.h>
 
-namespace reseau_interurbain {
-namespace gui {
+namespace wxwidgets_quickstart_template {
+namespace ui {
 inline wxString wxBuildInfo() {
     wxString build;
     wxString version;
-    version << "v" << ReseauInterurbain_VERSION_MAJOR << "."
-        << ReseauInterurbain_VERSION_MINOR;
-    // build << APPLICATION_NAME << " " << version;
+    version << "v" << APPLICATION_VERSION_MAJOR << "."
+        << APPLICATION_VERSION_MINOR;
+    build << APPLICATION_NAME << " " << version;
 #if defined (__WXMSW__)
     build << wxT("-Windows");
 #elif defined(__UNIX__)
@@ -63,12 +60,6 @@ wxEND_EVENT_TABLE()
 
 MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
       : wxFrame(p_parent, p_id, wxTheApp->GetAppName()) {
-#if wxUSE_DC_TRANSFORM_MATRIX
-    domain::Model* t_model = new domain::Model(new wxAffineMatrix2D());
-#else
-    domain::Model* t_model = new domain::Model();
-#endif
-    m_controller = new domain::ControllerInput(t_model);
 
     // Initialize menu bar
     InitMenu();
@@ -76,75 +67,48 @@ MainWindowFrame::MainWindowFrame(wxWindow* p_parent, wxWindowID p_id)
 
     wxBoxSizer* bSizerVertical = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* bSizerHorizontal = new wxBoxSizer(wxHORIZONTAL);
-    m_view = new View(this, t_model);
-    m_sidePanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-
-#if wxUSE_GRAPHICS_CONTEXT
-    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDefaultRenderer());
-#if wxUSE_CAIRO
-    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetCairoRenderer());
-#endif  // wxUSE_CAIRO
-#ifdef __WXMSW__
-#if wxUSE_GRAPHICS_DIRECT2D
-    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetDirect2DRenderer());
-#endif
-#if wxUSE_GRAPHICS_GDIPLUS
-    m_view->UseGraphicRenderer(wxGraphicsRenderer::GetGDIPlusRenderer());
-#endif
-#endif  // __WXMSW__
-#endif  // wxUSE_GRAPHICS_CONTEXT
 
     // Horizontal sizer on top, contains drawing Panel and side panel
     bSizerVertical->Add(bSizerHorizontal, 1, wxEXPAND | wxALL, 5);
-    bSizerHorizontal->Add(m_view, 4, wxEXPAND | wxALL, 5);
-    bSizerHorizontal->Add(m_sidePanel, 1, wxEXPAND | wxALL, 5);
-
-    // Sets background color
-    m_view->SetBackgroundColour(wxColor(255, 255, 255));
-    m_sidePanel->SetBackgroundColour(wxColor(0, 0, 0));
 
     SetSizer(bSizerVertical);
     Layout();
     Maximize();
     Show();
 }
-MainWindowFrame::~MainWindowFrame() {
-    delete m_controller;
-}
+
 void MainWindowFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event)) {
     static bool destroyed = false;
     if (destroyed)
         return;
-
     this->Destroy();
-
     destroyed = true;
 }
+
 void MainWindowFrame::OnExit(wxCommandEvent& WXUNUSED(event)) {
     Close(true);
 }
+
 void MainWindowFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
     wxMessageBox(wxBuildInfo(), wxT("Information"));
 }
+
 void MainWindowFrame::InitMenu() {
     wxMenu* fileMenu = new wxMenu();
     wxMenu* editMenu = new wxMenu();
     wxMenu* helpMenu = new wxMenu();
     wxMenuBar* mainMenuBar = new wxMenuBar();
     wxString version;
-    version << "En savoir plus sur la version"
-        << " de l'application Reseau Interurbain";
-    fileMenu->Append(wxID_EXIT, wxT("&Quitter    Alt-Q"),
-        wxT("Quitter l'application Reseau Interurbain"));
-    helpMenu->Append(wxID_ABOUT, wxT("&Version"),
-        version);
+    version << "Learn more about " << APPLICATION_NAME;
+    fileMenu->Append(wxID_EXIT, wxT("&Exit"));
+    helpMenu->Append(wxID_ABOUT, wxT("&Version"), version);
 
-    mainMenuBar->Append(fileMenu, wxT("&Fichier"));
+    mainMenuBar->Append(fileMenu, wxT("&File"));
     mainMenuBar->Append(editMenu, wxT("&Edit"));
-    mainMenuBar->Append(helpMenu, wxT("Aide"));
+    mainMenuBar->Append(helpMenu, wxT("Help"));
 
     SetMenuBar(mainMenuBar);
 }
-}  // namespace gui
-}  // namespace reseau_interurbain
+}  // namespace ui
+}  // namespace wxwidgets_quickstart_template
 
