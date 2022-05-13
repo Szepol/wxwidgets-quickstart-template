@@ -29,4 +29,4 @@ TEST(SampleTest, MyTest) {
 }
 }  // namespace sampletest
 }  // namespace sampletests
-}  // namespace wxwidget_quickstart_template
+}  // namespace wxwidgets_quickstart_template
