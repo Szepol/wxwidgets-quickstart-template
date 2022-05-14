@@ -6,26 +6,64 @@ project(
     LANGUAGES CXX
 )
 
-find_package(wxWidgets REQUIRED)
+find_package(wxWidgets)
 
-# Temporary fix for weird MSVC interaction
-if (MSVC)
-  if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    if (NOT ${wxWidgets_CONFIGURATION} MATCHES .*d$ )
-      set(wxWidgets_CONFIGURATION ${wxWidgets_CONFIGURATION}d)
+if(wxWidgets_FOUND)
+  # Temporary fix for weird MSVC interaction
+  if(MSVC)
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+      if(NOT ${wxWidgets_CONFIGURATION} MATCHES .*d$ )
+        set(wxWidgets_CONFIGURATION ${wxWidgets_CONFIGURATION}d)
+      endif()
+    else()
+      if(${wxWidgets_CONFIGURATION} MATCHES .*d$ )
+        string(LENGTH ${wxWidgets_CONFIGURATION} BUILD_STR_SIZE)
+        MATH(EXPR BUILD_STR_SIZE "${BUILD_STR_SIZE}-1")
+        string(SUBSTRING ${wxWidgets_CONFIGURATION} 0 ${BUILD_STR_SIZE} wxWidgets_CONFIGURATION)
+      endif()
     endif()
+
+    find_package(wxWidgets REQUIRED)
+  endif()
+  include(${wxWidgets_USE_FILE})
+else(NOT wxWidgets_FOUND)
+  set(USING_CPM true)
+  set(BUILD_SHARED_LIBS OFF)
+  set(CPM_DOWNLOAD_VERSION 0.34.0)
+
+  if(CPM_SOURCE_CACHE)
+    get_filename_component(CPM_SOURCE_CACHE ${CPM_SOURCE_CACHE} ABSOLUTE)
+    set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
+  elseif(DEFINED ENV{CPM_SOURCE_CACHE})
+    set(CPM_DOWNLOAD_LOCATION "$ENV{CPM_SOURCE_CACHE}/cpm/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
   else()
-    if (${wxWidgets_CONFIGURATION} MATCHES .*d$ )
-      string(LENGTH ${wxWidgets_CONFIGURATION} BUILD_STR_SIZE)
-      MATH(EXPR BUILD_STR_SIZE "${BUILD_STR_SIZE}-1")
-      string(SUBSTRING ${wxWidgets_CONFIGURATION} 0 ${BUILD_STR_SIZE} wxWidgets_CONFIGURATION)
-    endif()
+    set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
   endif()
 
-  find_package(wxWidgets REQUIRED)
-endif()
+  if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
+    message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
+    file(DOWNLOAD
+    https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+    ${CPM_DOWNLOAD_LOCATION}
+  )
+  endif()
 
-include(${wxWidgets_USE_FILE})
+  include(${CPM_DOWNLOAD_LOCATION})
+
+  CPMAddPackage(
+    NAME Ccache.cmake
+    GITHUB_REPOSITORY TheLartians/Ccache.cmake
+    VERSION 1.2
+  )
+
+  set(USE_CCACHE true)
+
+  CPMAddPackage(
+    NAME wxWidgets
+    GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets
+    GIT_TAG        v3.1.6
+  )
+endif()
 
 add_subdirectory(src)
 
