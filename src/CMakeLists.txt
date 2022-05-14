@@ -2,12 +2,12 @@ add_library(
   ui
   ui/MainWindowFrame.cc
   ui/MainWindowFrame.h
-  )
+)
 
-if (WIN32)
-    add_executable(${PROJECT_NAME} WIN32 App.cc)
+if(WIN32)
+  add_executable(${PROJECT_NAME} WIN32 App.cc)
 else()
-    add_executable(${PROJECT_NAME} App.cc)
+  add_executable(${PROJECT_NAME} App.cc)
 ENDIF()
 
 configure_file("Version.h.in" "Version.h")
