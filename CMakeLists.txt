@@ -51,14 +51,6 @@ else(NOT wxWidgets_FOUND)
   include(${CPM_DOWNLOAD_LOCATION})
 
   CPMAddPackage(
-    NAME Ccache.cmake
-    GITHUB_REPOSITORY TheLartians/Ccache.cmake
-    VERSION 1.2
-  )
-
-  set(USE_CCACHE true)
-
-  CPMAddPackage(
     NAME wxWidgets
     GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets
     GIT_TAG        v3.1.6
