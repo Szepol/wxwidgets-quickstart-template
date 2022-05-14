@@ -20,7 +20,7 @@ To generate a new repository using this template you can follow these [steps](ht
 
 ### Fetch libraries with CMake.
 
-#### Windows
+#### **Windows**
 
 ##### MSVC
 
@@ -39,7 +39,7 @@ To generate a new repository using this template you can follow these [steps](ht
  cmake --build . --parallel=<number of jobs> --config=<Configuration type>
  ```
 
-#### Linux
+#### **Linux**
 
 ```bash
 sudo apt-get install -y build-essential libgtk-3-dev libglew-dev
