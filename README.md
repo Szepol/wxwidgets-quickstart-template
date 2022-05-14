@@ -20,9 +20,7 @@ To generate a new repository using this template you can follow these [steps](ht
 
 ### Fetch libraries with CMake.
 
-#### **Windows**
-
-##### MSVC
+#### Windows - MSVC
 
 1. Open the repository with Microsoft Visual Studio.
 2. Go make a coffee it might take around 15 minute. \
@@ -31,7 +29,7 @@ To generate a new repository using this template you can follow these [steps](ht
 *Recommended:* go to **Project -> CMake Settings for project** and add `-parallel=8` in **Build** command arguments to build the project faster, save the settings once it's done.
 4. Click on **Select Startup Item** and select current document
 
-##### CMake & Ninja
+#### Windows - CMake & Ninja
 
 ```bash
  mkdir build && cd build
@@ -39,7 +37,7 @@ To generate a new repository using this template you can follow these [steps](ht
  cmake --build . --parallel=<number of jobs> --config=<Configuration type>
  ```
 
-#### **Linux**
+#### Linux
 
 ```bash
 sudo apt-get install -y build-essential libgtk-3-dev libglew-dev
