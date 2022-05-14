@@ -43,9 +43,9 @@ else(NOT wxWidgets_FOUND)
   if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
     message(STATUS "Downloading CPM.cmake to ${CPM_DOWNLOAD_LOCATION}")
     file(DOWNLOAD
-    https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
-    ${CPM_DOWNLOAD_LOCATION}
-  )
+      https://github.com/cpm-cmake/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake
+      ${CPM_DOWNLOAD_LOCATION}
+    )
   endif()
 
   include(${CPM_DOWNLOAD_LOCATION})
@@ -67,9 +67,9 @@ if(BUILD_TESTING)
     include (FetchContent)
 
 	FetchContent_Declare(
-		googletest
-		GIT_REPOSITORY https://github.com/google/googletest.git
-		GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
+      googletest
+      GIT_REPOSITORY https://github.com/google/googletest.git
+      GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # release-1.11.0
 	)
 
 	if (WIN32)
@@ -79,7 +79,6 @@ if(BUILD_TESTING)
 	FetchContent_MakeAvailable(googletest)
     include(GoogleTest)
   endif()
-  enable_testing ()
-
+  enable_testing()
   add_subdirectory(tests)
 endif()
